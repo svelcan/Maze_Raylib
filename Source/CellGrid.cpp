@@ -1,4 +1,5 @@
 #include "CellGrid.hpp"
+#include "Constants.hpp"
 #include <raylib.h>
 
 
@@ -23,7 +24,19 @@ void CellGrid::GenerateGrid(){
 
     for(float i = 0; i < size.x; i++){
         for(float j = 0; j < size.y; j++){
-            Cell cell = Cell({j*5+1,i*5+1});
+            Cell cell = Cell({j*cellSize+1,i*cellSize+1});
+            maze.push_back(cell);
+        }
+    }
+}
+
+void CellGrid::GenerateRandomGrid(){
+    maze.clear();
+
+    for(float i = 0; i < size.x; i++){
+        for(float j = 0; j < size.y; j++){
+            Cell cell = Cell({j*cellSize+1,i*cellSize+1});
+            cell.RandomizeWalls();
             maze.push_back(cell);
         }
     }

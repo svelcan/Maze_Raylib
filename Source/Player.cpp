@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "Constants.hpp"
 #include <raylib.h>
 
 
@@ -16,16 +17,16 @@ void Player::setPosition(Vector2 position){
 
 void Player::Update(){
     if(IsKeyPressed(KEY_RIGHT)){
-        position.x += 5;
+        position.x += cellSize;
     }
     if(IsKeyPressed(KEY_LEFT)){
-        position.x -= 5;
+        position.x -= cellSize;
     }
     if(IsKeyPressed(KEY_DOWN)){
-        position.y += 5;
+        position.y += cellSize;
     }
     if(IsKeyPressed(KEY_UP)){
-        position.y -= 5;
+        position.y -= cellSize;
     }
 }
 

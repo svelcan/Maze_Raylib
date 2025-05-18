@@ -5,3 +5,5 @@ const int screenHeight = 720;
 
 const int gameWidth = 320;
 const int gameHeight = 180;
+
+const int cellSize = 10;

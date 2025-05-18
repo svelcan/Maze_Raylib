@@ -1,14 +1,18 @@
 #include "Cell.hpp"
+#include "Constants.hpp"
 #include <raylib.h>
 
 
 Cell::Cell(Vector2 position){
-    this->position = position;
-    this->wall_bottom = GetRandomValue(0, 1);
-    this->wall_right = GetRandomValue(0, 1);
+    this->position = position;    
 }
 
 Cell::~Cell(){
+}
+
+void Cell::RandomizeWalls(){
+    this->wall_bottom = GetRandomValue(0, 1);
+    this->wall_right = GetRandomValue(0, 1);
 }
 
 void Cell::Draw(){
