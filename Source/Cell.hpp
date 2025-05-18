@@ -13,6 +13,8 @@ class Cell{
     
 
     public:
+    int cellSize = 5;
+
     //Constructor & Deconstructor
     Cell(Vector2 position);
     ~Cell();

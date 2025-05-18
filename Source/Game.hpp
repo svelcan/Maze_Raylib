@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CellGrid.hpp"
+#include "Player.hpp"
 #include <raylib.h>
 
 
@@ -11,6 +12,7 @@ class Game{
     //Sound eatSound;
     //Sound wallSound;
 
+    Player player;
     CellGrid cellGrid;
     
 

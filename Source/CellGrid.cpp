@@ -23,7 +23,7 @@ void CellGrid::GenerateGrid(){
 
     for(float i = 0; i < size.x; i++){
         for(float j = 0; j < size.y; j++){
-            Cell cell = Cell({j*5,i*5+1});
+            Cell cell = Cell({j*5+1,i*5+1});
             maze.push_back(cell);
         }
     }

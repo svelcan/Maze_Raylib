@@ -12,13 +12,13 @@ Cell::~Cell(){
 }
 
 void Cell::Draw(){
-    DrawRectangle(position.x, position.y, 4, 4, BLUE);
+    DrawRectangle(position.x, position.y, cellSize-1, cellSize-1, BLUE);
     if(wall_bottom && wall_right){
-        DrawRectangle(position.x, position.y, 5, 4, BLUE);
-        DrawRectangle(position.x, position.y, 4, 5, BLUE);
+        DrawRectangle(position.x, position.y, cellSize, cellSize-1, BLUE);
+        DrawRectangle(position.x, position.y, cellSize-1, cellSize, BLUE);
     } else if(wall_bottom){
-        DrawRectangle(position.x, position.y, 4, 5, BLUE);
+        DrawRectangle(position.x, position.y, cellSize-1, cellSize, BLUE);
     } else if(wall_right){
-        DrawRectangle(position.x, position.y, 5, 4, BLUE);
+        DrawRectangle(position.x, position.y, cellSize, cellSize-1, BLUE);
     }
 }
