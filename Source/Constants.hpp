@@ -10,6 +10,7 @@ extern const int gameWidth;
 extern const int gameHeight;
 
 extern const int cellSize;
+extern const int wallSize;
 
 
 #endif

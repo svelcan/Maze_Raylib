@@ -7,14 +7,12 @@
 #include <vector>
 
 
-
-class CellGrid{
+class Maze{
     private:
     std::vector<std::vector<Cell>> grid;
     int rows, colummns;
     
     //TODO add maximum size of maze (around 35*63 probably)
-    Vector2 size;
     std::list<Cell> maze;
     std::stack<Cell> mazeStack;
 
@@ -24,8 +22,7 @@ class CellGrid{
     std::vector<int> options = {1,2,3,4};
 
     //Constructor & Deconstructor
-    CellGrid();
-    CellGrid(int rows, int colummns);
+    Maze();
 
     //Generates a maze that has every wall placed
     void GenerateGrid();

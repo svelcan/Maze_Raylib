@@ -1,34 +1,7 @@
-#include "CellGrid.hpp"
-#include "Cell.hpp"
+#include "Maze.hpp"
 #include "Constants.hpp"
-#include <iostream>
-#include <raylib.h>
-#include <raymath.h>
 
-
-
-CellGrid::CellGrid(){
-    this->size = {5,5};
-}
-
-CellGrid::CellGrid(int rows, int colummns){
-    this->rows = rows;
-    this->colummns = colummns;
-    
-    for (float y = 0; y < rows; ++y) {
-        for (float x = 0; x < colummns; ++x) {
-            grid[y][x] = Cell({x * cellSize, y * cellSize});
-        }
-    }
-}
-
-void CellGrid::Draw(){
-    /*for (Cell cell : maze) {
-        cell.Draw();
-    }*/
-}
-
-void CellGrid::GenerateGrid(){
+void Maze::GenerateGrid(){
     maze.clear();
 
     //TODO this is a horrible placeholder for when I finally center everything by myself
@@ -41,7 +14,7 @@ void CellGrid::GenerateGrid(){
     }
 }
 
-void CellGrid::GenerateRandomGrid(){
+void Maze::GenerateRandomGrid(){
     maze.clear();
 
     for(float i = 0; i < size.x; i++){
@@ -55,7 +28,7 @@ void CellGrid::GenerateRandomGrid(){
 
 
 //TODO fix return statement
-void CellGrid::GenerateBackTrackingGrid(){
+void Maze::GenerateBackTrackingGrid(){
 
     currentCell = Cell({5.0f*cellSize, 5.0f*cellSize});
     mazeStack.push(currentCell);
@@ -108,7 +81,7 @@ void CellGrid::GenerateBackTrackingGrid(){
 }
 
 //Check if cell is inside the grid and not visited
-bool CellGrid::isValid(Cell cell){
+bool Maze::isValid(Cell cell){
     if(cell.visited || cell.getPosition().x < 0 || cell.getPosition().y < 0 || cell.getPosition().x > size.x || cell.getPosition().y > size.y){
         return false;
     }
