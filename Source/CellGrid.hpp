@@ -42,5 +42,6 @@ class CellGrid{
     std::stack<Cell> mazeStack;
 
     //Maze algorithms
+    //This serves no purpose but is funny for now
     void GenerateRandomMaze();
 };
