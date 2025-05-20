@@ -2,8 +2,6 @@
 
 #include <raylib.h>
 #include "Cell.hpp"
-#include <list>
-#include <stack>
 #include <vector>
 
 
@@ -11,32 +9,21 @@
 class CellGrid{
     private:
     std::vector<std::vector<Cell>> grid;
-    int rows, colummns;
+    int rows, columns;
+    Vector2 position;
     
     //TODO add maximum size of maze (around 35*63 probably)
-    Vector2 size;
-    std::list<Cell> maze;
-    std::stack<Cell> mazeStack;
 
     public:
-    //Placeholders for now
-    Cell currentCell = Cell();
-    std::vector<int> options = {1,2,3,4};
-
     //Constructor & Deconstructor
     CellGrid();
     CellGrid(int rows, int colummns);
 
-    //Generates a maze that has every wall placed
-    void GenerateGrid();
+    //Getters & Setters
+    Cell& getCell(int row, int col);
+    //This might or might not be useful so for the time being I'm leaving it
+    Cell& getCellAtPosition(Vector2 pos);
 
-    //Generates a maze that makes no sense because walls are placed randomly
-    void GenerateRandomGrid();
-
-    //Generates a maze using a backtracking algorithm
-    void GenerateBackTrackingGrid();
-    //Checks thingys
-    bool isValid(Cell cell);
 
     //Draws to the screen
     void Draw();
