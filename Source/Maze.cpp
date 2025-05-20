@@ -1,20 +1,11 @@
 #include "Maze.hpp"
 #include "Constants.hpp"
 
-void Maze::GenerateGrid(){
-    maze.clear();
 
-    //TODO this is a horrible placeholder for when I finally center everything by myself
-    //TODO I'm just lazy, this shouldn't take a lot of time
-    for(float i = 14; i < size.x+14; i++){
-        for(float j = 5; j < size.y+5; j++){
-            Cell cell = Cell({i*cellSize,j*cellSize});
-            maze.push_back(cell);
-        }
-    }
+Maze::Maze(){
 }
 
-void Maze::GenerateRandomGrid(){
+void Maze::GenerateRandomMaze(){
     maze.clear();
 
     for(float i = 0; i < size.x; i++){
@@ -28,7 +19,7 @@ void Maze::GenerateRandomGrid(){
 
 
 //TODO fix return statement
-void Maze::GenerateBackTrackingGrid(){
+void Maze::GenerateBackTrackingMaze(){
 
     currentCell = Cell({5.0f*cellSize, 5.0f*cellSize});
     mazeStack.push(currentCell);

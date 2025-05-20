@@ -3,6 +3,7 @@
 #include <raylib.h>
 #include "Cell.hpp"
 #include <vector>
+#include <stack>
 
 
 
@@ -27,4 +28,19 @@ class CellGrid{
 
     //Draws to the screen
     void Draw();
+
+
+
+
+
+
+
+
+
+
+    //Maze stuff
+    std::stack<Cell> mazeStack;
+
+    //Maze algorithms
+    void GenerateRandomMaze();
 };

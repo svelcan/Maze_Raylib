@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include <raylib.h>
 
 
 Game::Game(){
@@ -24,6 +25,9 @@ void Game::Draw() {
 
 void Game::Update(float deltaTime){
     player.Update();
+    if(IsKeyPressed(KEY_SPACE)){
+        cellGrid.GenerateRandomMaze();
+    }
 }
 
 void Game::GameOver(){

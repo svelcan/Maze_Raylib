@@ -1,18 +1,12 @@
 #pragma once
 
 #include <raylib.h>
-#include "Cell.hpp"
 #include <list>
 #include <stack>
 #include <vector>
 
-
 class Maze{
     private:
-    std::vector<std::vector<Cell>> grid;
-    int rows, colummns;
-    
-    //TODO add maximum size of maze (around 35*63 probably)
     std::list<Cell> maze;
     std::stack<Cell> mazeStack;
 
@@ -24,14 +18,11 @@ class Maze{
     //Constructor & Deconstructor
     Maze();
 
-    //Generates a maze that has every wall placed
-    void GenerateGrid();
-
     //Generates a maze that makes no sense because walls are placed randomly
-    void GenerateRandomGrid();
+    void GenerateRandomMaze();
 
     //Generates a maze using a backtracking algorithm
-    void GenerateBackTrackingGrid();
+    void GenerateBackTrackingMaze();
     //Checks thingys
     bool isValid(Cell cell);
 

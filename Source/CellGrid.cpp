@@ -1,5 +1,4 @@
 #include "CellGrid.hpp"
-#include "Cell.hpp"
 #include "Constants.hpp"
 #include <raylib.h>
 #include <raymath.h>
@@ -33,6 +32,22 @@ Cell& CellGrid::getCellAtPosition(Vector2 pos) {
     int row = pos.y / cellSize;
     return grid[row][col];
 }
+
+
+void CellGrid::GenerateRandomMaze(){
+
+    for (int y = 0; y < rows; ++y) {
+        for (int x = 0; x < columns; ++x) {
+            grid[y][x].RandomizeWalls();
+        }
+    }
+}
+
+
+
+
+
+
 
 void CellGrid::Draw(){
     for (float y = 0; y < rows; ++y) {
