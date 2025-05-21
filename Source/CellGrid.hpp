@@ -23,6 +23,10 @@ class CellGrid{
     CellGrid(int rows, int colummns);
 
     //Getters & Setters
+    int getColumns();
+    int getRows();
+    Vector2 getOrigin();
+
     Cell& getCell(int row, int col);
     //This might or might not be useful so for the time being I'm leaving it
     Cell& getCellAtPosition(Vector2 pos);

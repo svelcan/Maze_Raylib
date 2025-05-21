@@ -13,7 +13,7 @@ CellGrid::CellGrid(){
 
 CellGrid::CellGrid(int rows, int columns){
     //TODO Find an efficient way to center the maze depending on size
-    this->position = {50, 30};
+    this->position = {1, 1};
 
     this->rows = rows;
     this->columns = columns;
@@ -36,7 +36,17 @@ Cell& CellGrid::getCellAtPosition(Vector2 pos) {
     return grid[row][col];
 }
 
+int CellGrid::getColumns(){
+    return this->columns;
+}
 
+int CellGrid::getRows(){
+    return this->rows;
+}
+
+Vector2 CellGrid::getOrigin(){
+    return this->position;
+}
 
 /*
 * MAZE ALGORITHMS ----------------------------------------------------------------------------------------------
@@ -57,7 +67,8 @@ void CellGrid::GenerateBackTrackingMaze(){
 
     std::stack<Cell> mazeStack;
 
-    mazeStack.push(grid[5][5]);
+    mazeStack.push(grid[0][0]);
+    grid[0][0].visited = true;
     
 
     //Choose between going up, down, left or right
@@ -70,10 +81,7 @@ void CellGrid::GenerateBackTrackingMaze(){
     while(!mazeStack.empty()){
         Vector2 cellPositionInGrid = (mazeStack.top().getPosition()-position)/cellSize;
         std::vector<Vector2> options = {up, down, left, right};
-        while(!options.empty()){
-            std::cout << mazeStack.size() << std::endl;
-            
-            
+        while(!options.empty()){            
             int randomDirection = GetRandomValue(0, options.size()-1);
             Vector2 direction = options[randomDirection];
 

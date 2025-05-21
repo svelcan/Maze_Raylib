@@ -1,8 +1,12 @@
+#pragma once 
+
 #include <raylib.h>
+#include "CellGrid.hpp"
 
 class Player{
     private:
     Vector2 position;
+    Vector2 size = {4,4};
     Texture2D texture;
     
 
@@ -15,6 +19,8 @@ class Player{
     void setPosition(Vector2 position);
     Vector2 getPosition();
 
-    void Update();
+    bool IsThereCell(Vector2 positionCell, CellGrid& cellGrid);
+
+    void Update(CellGrid& cellGrid);
     void Draw();
 };

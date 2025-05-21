@@ -3,6 +3,7 @@
 #include "Constants.hpp"
 
 #include <math.h>
+#include <time.h>
 
 
 
@@ -11,6 +12,9 @@ int main()
 {
 
     InitWindow(screenWidth, screenHeight, "Magic_Maze");
+
+    SetRandomSeed(time(NULL));
+
     Game game = Game();
 
     // Create a render texture at the game's internal resolution
