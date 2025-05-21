@@ -20,9 +20,8 @@ class Cell{
         bool visible;
     };
 
-    Wall wall_bottom = {true, true};
-    Wall wall_right = {true, true}; 
-    //TODO Walls should be private probably
+    Wall wall_bottom;
+    Wall wall_right;
     bool visited = false;
 
     //Constructor & Deconstructor

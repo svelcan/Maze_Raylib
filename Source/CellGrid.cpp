@@ -1,5 +1,4 @@
 #include "CellGrid.hpp"
-#include "Cell.hpp"
 #include "Constants.hpp"
 #include <iostream>
 #include <raylib.h>
@@ -60,7 +59,6 @@ void CellGrid::GenerateRandomMaze(){
     }
 }
 
-//TODO fix bug at origin
 //Sometimes this algorithm generates mazes where the origin has a dot for a wall
 void CellGrid::GenerateBackTrackingMaze(){
     ResetGrid();
@@ -96,13 +94,13 @@ void CellGrid::GenerateBackTrackingMaze(){
 
                 // Remove walls between currentCell and nextCell
                 if (direction.x == 1) { // right
-                    currentCell.wall_right = false;
+                    currentCell.wall_right.exists = false;
                 } else if (direction.x == -1) { // left
-                    nextCell.wall_right = false;
+                    nextCell.wall_right.exists = false;
                 } else if (direction.y == 1) { // down
-                    currentCell.wall_bottom = false;
+                    currentCell.wall_bottom.exists = false;
                 } else if (direction.y == -1) { // up
-                    nextCell.wall_bottom = false;
+                    nextCell.wall_bottom.exists = false;
                 }
 
 
@@ -138,8 +136,10 @@ bool CellGrid::isValid(Vector2 cellPosition){
 void CellGrid::ResetGrid(){
     for (int y = 0; y < rows; ++y) {
         for (int x = 0; x < columns; ++x) {
-            grid[y][x].wall_bottom = true;
-            grid[y][x].wall_right = true;
+            grid[y][x].wall_bottom.exists = true;
+            grid[y][x].wall_right.exists = true;
+            grid[y][x].wall_bottom.visible = false;
+            grid[y][x].wall_right.visible = false;
             grid[y][x].visited = false;
         }
     }

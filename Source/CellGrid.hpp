@@ -10,6 +10,7 @@ class CellGrid{
     private:
     std::vector<std::vector<Cell>> grid;
     int rows, columns;
+    //TODO change origin
     Vector2 position;
 
     //Private methods
