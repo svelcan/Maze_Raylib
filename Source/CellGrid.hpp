@@ -11,6 +11,9 @@ class CellGrid{
     std::vector<std::vector<Cell>> grid;
     int rows, columns;
     Vector2 position;
+
+    //Private methods
+    void ResetGrid();
     
     //TODO add maximum size of maze (around 35*63 probably)
 

@@ -50,13 +50,14 @@ void CellGrid::GenerateRandomMaze(){
     }
 }
 
-
+//TODO fix bug at origin
+//Sometimes this algorithm generates mazes where the origin has a dot for a wall
 void CellGrid::GenerateBackTrackingMaze(){
+    ResetGrid();
 
     std::stack<Cell> mazeStack;
-    Vector2 cellPositionInGrid = {3,3};
 
-    mazeStack.push(grid[cellPositionInGrid.y][cellPositionInGrid.x]);
+    mazeStack.push(grid[5][5]);
     
 
     //Choose between going up, down, left or right
@@ -66,12 +67,12 @@ void CellGrid::GenerateBackTrackingMaze(){
     Vector2 left = {-1, 0};
     Vector2 right = {1, 0};
 
-    std::cout << "First Check" << std::endl;
     while(!mazeStack.empty()){
+        Vector2 cellPositionInGrid = (mazeStack.top().getPosition()-position)/cellSize;
         std::vector<Vector2> options = {up, down, left, right};
         while(!options.empty()){
-            std::cout << "Second Check" << std::endl;
-            std::cout << options.size();
+            std::cout << mazeStack.size() << std::endl;
+            
             
             int randomDirection = GetRandomValue(0, options.size()-1);
             Vector2 direction = options[randomDirection];
@@ -79,10 +80,28 @@ void CellGrid::GenerateBackTrackingMaze(){
             Vector2 nextPosition = Vector2Add(cellPositionInGrid, direction);
 
             //If the cell is valid, add it to the stack, mark it as visited and go to that available cell
+            //Also remove walls when moving
             //If the cell isn't valid erase the possibility of that direction and repeat
             if(isValid(nextPosition)){
-                mazeStack.push(getCell(nextPosition.y, nextPosition.x));
-                getCell(nextPosition.y, nextPosition.x).visited = true;
+                Cell& currentCell = getCell(cellPositionInGrid.y, cellPositionInGrid.x);
+                Cell& nextCell = getCell(nextPosition.y, nextPosition.x);
+
+                // Remove walls between currentCell and nextCell
+                if (direction.x == 1) { // right
+                    currentCell.wall_right = false;
+                } else if (direction.x == -1) { // left
+                    nextCell.wall_right = false;
+                } else if (direction.y == 1) { // down
+                    currentCell.wall_bottom = false;
+                } else if (direction.y == -1) { // up
+                    nextCell.wall_bottom = false;
+                }
+
+
+
+
+                mazeStack.push(nextCell);
+                nextCell.visited = true;
                 cellPositionInGrid = nextPosition;
             } else {
                 options.erase(options.begin() + randomDirection);
@@ -90,12 +109,7 @@ void CellGrid::GenerateBackTrackingMaze(){
 
         }
 
-        std::cout << "Third check" << std::endl;
-        
         //If there aren't any valid cells then backtrack biatch
-
-        getCellAtPosition(mazeStack.top().getPosition()).wall_bottom = 0;
-        getCellAtPosition(mazeStack.top().getPosition()).wall_right = 1;
         mazeStack.pop();
     }
     std::cout << "The one piece is real!!!";
@@ -106,14 +120,22 @@ void CellGrid::GenerateBackTrackingMaze(){
 bool CellGrid::isValid(Vector2 cellPosition){
     if(cellPosition.x < 0
         || cellPosition.y < 0
-        || cellPosition.x > columns
-        || cellPosition.y > rows){
+        || cellPosition.x >= columns
+        || cellPosition.y >= rows){
         return false;
     } 
     return !grid[cellPosition.y][cellPosition.x].visited;
 }
 
-
+void CellGrid::ResetGrid(){
+    for (int y = 0; y < rows; ++y) {
+        for (int x = 0; x < columns; ++x) {
+            grid[y][x].wall_bottom = true;
+            grid[y][x].wall_right = true;
+            grid[y][x].visited = false;
+        }
+    }
+}
 
 
 

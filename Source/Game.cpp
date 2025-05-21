@@ -3,7 +3,7 @@
 
 
 Game::Game(){
-    this->cellGrid = CellGrid({5,10});
+    this->cellGrid = CellGrid({10,10});
     this->player = Player();
     InitAudioDevice();
 
