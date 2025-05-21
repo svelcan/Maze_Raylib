@@ -3,7 +3,6 @@
 #include <raylib.h>
 #include "Cell.hpp"
 #include <vector>
-#include <stack>
 
 
 
@@ -33,15 +32,9 @@ class CellGrid{
 
 
 
-
-
-
-
-
-    //Maze stuff
-    std::stack<Cell> mazeStack;
-
     //Maze algorithms
     //This serves no purpose but is funny for now
     void GenerateRandomMaze();
+    void GenerateBackTrackingMaze();
+    bool isValid(Vector2 position);
 };

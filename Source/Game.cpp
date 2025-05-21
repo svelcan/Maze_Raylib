@@ -26,7 +26,7 @@ void Game::Draw() {
 void Game::Update(float deltaTime){
     player.Update();
     if(IsKeyPressed(KEY_SPACE)){
-        cellGrid.GenerateRandomMaze();
+        cellGrid.GenerateBackTrackingMaze();
     }
 }
 
