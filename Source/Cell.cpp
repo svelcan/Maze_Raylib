@@ -29,12 +29,12 @@ void Cell::setPosition(Vector2 position){
 
 void Cell::Draw(){
     DrawRectangle(position.x, position.y, cellSize-wallSize, cellSize-wallSize, BLUE);
-    if(wall_bottom && wall_right){
+    if(!wall_bottom && !wall_right){
         DrawRectangle(position.x, position.y, cellSize, cellSize-wallSize, BLUE);
         DrawRectangle(position.x, position.y, cellSize-wallSize, cellSize, BLUE);
-    } else if(wall_bottom){
+    } else if(!wall_bottom){
         DrawRectangle(position.x, position.y, cellSize-wallSize, cellSize, BLUE);
-    } else if(wall_right){
+    } else if(!wall_right){
         DrawRectangle(position.x, position.y, cellSize, cellSize-wallSize, BLUE);
     }
 }
