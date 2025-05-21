@@ -15,8 +15,8 @@ class Cell{
     public:
     //TODO Walls should be private probably
     bool visited = false;
-    bool wall_bottom = 0;
-    bool wall_right = 0;
+    bool wall_bottom = 1;
+    bool wall_right = 1;
 
     //Constructor & Deconstructor
     Cell();
