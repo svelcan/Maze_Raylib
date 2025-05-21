@@ -13,10 +13,17 @@ class Cell{
     
 
     public:
+
+    //Struct for Wall
+    struct Wall {
+        bool exists;
+        bool visible;
+    };
+
+    Wall wall_bottom = {true, true};
+    Wall wall_right = {true, true}; 
     //TODO Walls should be private probably
     bool visited = false;
-    bool wall_bottom = 1;
-    bool wall_right = 1;
 
     //Constructor & Deconstructor
     Cell();
