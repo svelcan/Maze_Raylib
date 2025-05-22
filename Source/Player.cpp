@@ -7,8 +7,12 @@
 
 
 Player::Player(){
-    initialPosition = {3,3};
-    position = {3,3};
+
+}
+Player::Player(CellGrid& cellGrid){
+    initialPosition = {cellGrid.getCell(0, 0).getPosition().x + wallSize, cellGrid.getCell(0, 0).getPosition().y + wallSize};
+    position = initialPosition;
+
 }
 
 Player::~Player(){
@@ -20,6 +24,13 @@ void Player::setPosition(Vector2 position){
 }
 
 void Player::Update(CellGrid& cellGrid, float deltaTime){
+    if(lastKnownMazeSize.x != cellGrid.getColumns() || lastKnownMazeSize.y != cellGrid.getRows()){
+        initialPosition = {cellGrid.getCell(0, 0).getPosition().x + wallSize, cellGrid.getCell(0, 0).getPosition().y + wallSize};
+        position = initialPosition;
+
+        lastKnownMazeSize = {float(cellGrid.getColumns()), float(cellGrid.getRows())};
+    }
+
     flare.Update(deltaTime);
     
     if(!allowMovement){

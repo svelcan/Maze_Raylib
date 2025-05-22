@@ -11,7 +11,9 @@ CellGrid::CellGrid(){
 
 CellGrid::CellGrid(int rows, int columns){
     //TODO Find an efficient way to center the maze depending on size
-    this->position = {1, 1};
+    Vector2 totalSizeMaze = {float(columns*cellSize - wallSize), float(rows*cellSize - wallSize)};
+    origin = {gameWidth/2.0f - totalSizeMaze.x/2, gameHeight/2.0f - totalSizeMaze.y/2-4};
+    //this->origin = {1, 1};
 
     this->rows = rows;
     this->columns = columns;
@@ -19,7 +21,7 @@ CellGrid::CellGrid(int rows, int columns){
     
     for (int y = 0; y < rows; ++y) {
         for (int x = 0; x < columns; ++x) {
-            grid[y][x] = Cell({float(x * cellSize + position.x), float(y * cellSize + position.y)});
+            grid[y][x] = Cell({float(x * cellSize + origin.x), float(y * cellSize + origin.y)});
         }
     }
 }
@@ -29,8 +31,8 @@ Cell& CellGrid::getCell(int row, int col) {
 }
 
 Cell& CellGrid::getCellAtPosition(Vector2 pos) {
-    int col = pos.x / cellSize;
-    int row = pos.y / cellSize;
+    int col = (pos.x - origin.x)/ cellSize;
+    int row = (pos.y - origin.y)/ cellSize;
     return grid[row][col];
 }
 
@@ -43,7 +45,7 @@ int CellGrid::getRows(){
 }
 
 Vector2 CellGrid::getOrigin(){
-    return this->position;
+    return this->origin;
 }
 
 void CellGrid::setVisibleWalls(bool visible){
@@ -85,7 +87,7 @@ void CellGrid::GenerateBackTrackingMaze(){
     Vector2 right = {1, 0};
 
     while(!mazeStack.empty()){
-        Vector2 cellPositionInGrid = (Vector2Subtract(mazeStack.top().getPosition(),position))/cellSize;
+        Vector2 cellPositionInGrid = (Vector2Subtract(mazeStack.top().getPosition(),origin))/cellSize;
         std::vector<Vector2> options = {up, down, left, right};
         while(!options.empty()){            
             int randomDirection = GetRandomValue(0, options.size()-1);

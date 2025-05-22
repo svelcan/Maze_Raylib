@@ -6,7 +6,7 @@
 
 Game::Game(){
     this->cellGrid = CellGrid({10,10});
-    this->player = Player();
+    this->player = Player(cellGrid);
     InitAudioDevice();
 
     //eatSound = LoadSound("Sounds/eat.mp3");

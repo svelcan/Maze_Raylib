@@ -11,6 +11,8 @@ class Player{
     Vector2 size = {4,4};
     Texture2D texture;
 
+    Vector2 lastKnownMazeSize = {10,10};
+
     Flare flare = Flare();
     
 
@@ -20,6 +22,7 @@ class Player{
     
     //Constructor & Deconstructor
     Player();
+    Player(CellGrid& cellGrid);
     ~Player();
 
     //Getters & Setters
