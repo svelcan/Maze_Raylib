@@ -91,16 +91,16 @@ bool Flare::isValid(Vector2 currentPosition, Vector2 nextPosition, Vector2 direc
     
 
     //If there is a wall return false
-    if(direction == right && cellGrid.getCell(currentPosition.y, currentPosition.x).wall_right.exists){
+    if(Vector2Equals(direction, right) && cellGrid.getCell(currentPosition.y, currentPosition.x).wall_right.exists){
         return false;
     }
-    if(direction == down && cellGrid.getCell(currentPosition.y, currentPosition.x).wall_bottom.exists){
+    if(Vector2Equals(direction, down) && cellGrid.getCell(currentPosition.y, currentPosition.x).wall_bottom.exists){
         return false;
     }
-    if(direction == left && cellGrid.getCell(nextPosition.y, nextPosition.x).wall_right.exists){
+    if(Vector2Equals(direction, left) && cellGrid.getCell(nextPosition.y, nextPosition.x).wall_right.exists){
         return false;
     }
-    if(direction == up && cellGrid.getCell(nextPosition.y, nextPosition.x).wall_bottom.exists){
+    if(Vector2Equals(direction, up) && cellGrid.getCell(nextPosition.y, nextPosition.x).wall_bottom.exists){
         return false;
     }
 

@@ -2,7 +2,6 @@
 #include "Cell.hpp"
 #include "CellGrid.hpp"
 #include "Constants.hpp"
-#include <iostream>
 #include <raylib.h>
 
 

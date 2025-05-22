@@ -10,10 +10,8 @@ CellGrid::CellGrid(){
 }
 
 CellGrid::CellGrid(int rows, int columns){
-    //TODO Find an efficient way to center the maze depending on size
     Vector2 totalSizeMaze = {float(columns*cellSize - wallSize), float(rows*cellSize - wallSize)};
     origin = {gameWidth/2.0f - totalSizeMaze.x/2, gameHeight/2.0f - totalSizeMaze.y/2-4};
-    //this->origin = {1, 1};
 
     this->rows = rows;
     this->columns = columns;
@@ -24,6 +22,10 @@ CellGrid::CellGrid(int rows, int columns){
             grid[y][x] = Cell({float(x * cellSize + origin.x), float(y * cellSize + origin.y)});
         }
     }
+
+    coin.position = getCell((float(rows)-1), float(columns)-1).getPosition();
+    coint.position = getCell((float(rows)-1), 0).getPosition();
+    coinp.position = getCell(0, float(columns)-1).getPosition();
 }
 
 Cell& CellGrid::getCell(int row, int col) {
@@ -69,7 +71,6 @@ void CellGrid::GenerateRandomMaze(){
     }
 }
 
-//Sometimes this algorithm generates mazes where the origin has a dot for a wall
 void CellGrid::GenerateBackTrackingMaze(){
     ResetGrid();
 
@@ -171,4 +172,8 @@ void CellGrid::Draw(){
             grid[y][x].Draw();
         }
     }
+
+    coin.Draw();
+    coint.Draw();
+    coinp.Draw();
 }
