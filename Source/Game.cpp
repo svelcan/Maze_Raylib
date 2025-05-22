@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "CellGrid.hpp"
 #include <raylib.h>
 
 
@@ -16,6 +17,13 @@ Game::~Game(){
     //UnloadSound(wallSound);
 }
 
+CellGrid& Game::getCellGrid(){
+    return this->cellGrid;
+}
+
+void Game::setCellGrid(CellGrid cellGrid){
+    this->cellGrid = cellGrid;
+}
 
 
 void Game::Draw() {
@@ -23,11 +31,15 @@ void Game::Draw() {
     player.Draw();
 }
 
-void Game::Update(float deltaTime){
+int Game::Update(float deltaTime){
     player.Update(cellGrid);
     if(IsKeyPressed(KEY_SPACE)){
         cellGrid.GenerateBackTrackingMaze();
     }
+    if(IsKeyPressed(KEY_R)){
+        return 0;
+    }
+    return -1;
 }
 
 void Game::GameOver(){

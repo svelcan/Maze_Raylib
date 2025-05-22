@@ -21,8 +21,10 @@ class Game{
     Game();
     ~Game();
 
+    CellGrid& getCellGrid();
+    void setCellGrid(CellGrid cellGrid);
     void GameOver();
 
     void Draw();
-    void Update(float deltaTime);
+    int Update(float deltaTime);
 };

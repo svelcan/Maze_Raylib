@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "Game.hpp"
 #include "Constants.hpp"
+#include "Menu.hpp"
 
 #include <math.h>
 #include <time.h>
@@ -10,23 +11,108 @@
 
 int main()
 {
-
+    //Initiate window and random seed
     InitWindow(screenWidth, screenHeight, "Magic_Maze");
-
     SetRandomSeed(time(NULL));
+
+    //Create menus BAD WAY TO DO ALL OF THIS BUT AT LEAST IT WORKS
+    Menu mainMenu = Menu();
+    mainMenu.CreateMainMenu();
+
+    Menu singleplayerMenu = Menu();
+    singleplayerMenu.CreateSingleplayerMenu();
+
+    Menu mazesizeMenu = Menu();
+    mazesizeMenu.CreateMazesizeMenu();
+
 
     Game game = Game();
 
+    //Game state management
+    enum class GameState{ MAIN_MENU, PLAYING, EXITING, MULTIPLAYER_MENU, SINGLEPLAYER_MENU, MAZESIZE_MENU, POSITIONRESET_MENU};
+    GameState currentState = GameState::MAIN_MENU;
+
     // Create a render texture at the game's internal resolution
     RenderTexture2D target = LoadRenderTexture(gameWidth, gameHeight);
+    SetTargetFPS(60);
 
     while (!WindowShouldClose())
     {
         //Framerate
         float deltaTime = GetFrameTime();
+        
+        //State-based Updating
+        switch (currentState)
+        {
+            case GameState::EXITING:
+                CloseWindow();
+                return 0;
+                break;
+                
+            case GameState::PLAYING:
+                switch (game.Update(deltaTime)) {
+                    case -1:
+                        currentState = GameState::PLAYING;
+                        break;
+                    case 0:
+                        currentState = GameState::MAIN_MENU;
+                        break;
+                }
+                break;
+            case GameState::MAIN_MENU:
+                switch (mainMenu.Update(deltaTime)) {
+                    case -1:
+                        currentState = GameState::MAIN_MENU;
+                        break;
+                    case 0:
+                        currentState = GameState::SINGLEPLAYER_MENU;
+                        break;
+                    case 1:
+                        currentState = GameState::EXITING;
+                        break;
+                }
+                break;
+                
+            case GameState::SINGLEPLAYER_MENU:
+                switch (singleplayerMenu.Update(deltaTime)) {
+                    case -1: 
+                        currentState = GameState::SINGLEPLAYER_MENU; 
+                        break;
+                    case 0: 
+                        currentState = GameState::MAZESIZE_MENU; 
+                        break;
+                    case 1: 
+                        currentState = GameState::PLAYING; 
+                        break;
+                    case 2: 
+                        currentState = GameState::MAIN_MENU; 
+                        break;
+                }
+                break;
 
-        //Updating
-        game.Update(deltaTime);
+            case GameState::MAZESIZE_MENU:
+                switch (singleplayerMenu.Update(deltaTime)) {
+                    case -1: 
+                        currentState = GameState::MAZESIZE_MENU; 
+                        break;
+                    case 0:
+                        game.setCellGrid(CellGrid({5,5}));
+                        currentState = GameState::SINGLEPLAYER_MENU; 
+                        break;
+                    case 1:
+                        game.setCellGrid(CellGrid({10,10}));
+                        currentState = GameState::SINGLEPLAYER_MENU; 
+                        break;
+                    case 2:
+                        game.setCellGrid(CellGrid({17,31}));
+                        currentState = GameState::SINGLEPLAYER_MENU; 
+                        break;
+                }
+                break;
+
+            default:
+                break;
+        }
 
 
         // Draw everything to the low-res render texture
@@ -34,7 +120,27 @@ int main()
             ClearBackground(BLACK);
 
             // Your low-res game drawing goes here:
-            game.Draw();
+            // State-based drawing
+            switch (currentState)
+            {
+                case GameState::MAIN_MENU:
+                    mainMenu.Draw();
+                    break;
+                case GameState::PLAYING:
+                    game.Draw();
+                    break;
+                case GameState::MAZESIZE_MENU:
+                    mazesizeMenu.Draw();
+                    break;
+                case GameState::SINGLEPLAYER_MENU:
+                    singleplayerMenu.Draw();
+                    break;
+                case GameState::MULTIPLAYER_MENU:
+                    //singleplayerMenu.Draw();
+                    break;
+                default:
+                    break;
+            }
         EndTextureMode();
 
 
