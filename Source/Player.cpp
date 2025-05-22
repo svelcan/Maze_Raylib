@@ -1,6 +1,8 @@
 #include "Player.hpp"
+#include "Cell.hpp"
 #include "CellGrid.hpp"
 #include "Constants.hpp"
+#include <iostream>
 #include <raylib.h>
 
 
@@ -17,14 +19,18 @@ void Player::setPosition(Vector2 position){
     this->position = position;
 }
 
-void Player::Update(CellGrid& cellGrid){
+void Player::Update(CellGrid& cellGrid, float deltaTime){
+    flare.Update(deltaTime);
+    
+    if(!allowMovement){
+        return;
+    }
 
     //If the player wants to move we check if there is a wall, if there is then reset player and show wall
-
     if(IsKeyPressed(KEY_RIGHT)){
         if(cellGrid.getCellAtPosition({position.x - wallSize, position.y - wallSize}).wall_right.exists){
             cellGrid.getCellAtPosition({position.x - wallSize, position.y - wallSize}).wall_right.visible = true;
-            ResetPlayer();
+            score--;
         } else {
             position.x += cellSize;
         }
@@ -33,7 +39,8 @@ void Player::Update(CellGrid& cellGrid){
         if(IsThereCell({(position.x - wallSize - cellGrid.getOrigin().x - cellSize)/cellSize, (position.y - wallSize - cellGrid.getOrigin().y)/cellSize}, cellGrid)){
             if(cellGrid.getCellAtPosition({position.x - wallSize - cellSize, position.y - wallSize}).wall_right.exists){
                 cellGrid.getCellAtPosition({position.x - wallSize - cellSize, position.y - wallSize}).wall_right.visible = true;
-                ResetPlayer();
+                score--;
+                //ResetPlayer();
             } else {
                position.x -= cellSize;
             }
@@ -42,7 +49,8 @@ void Player::Update(CellGrid& cellGrid){
     if(IsKeyPressed(KEY_DOWN)){
         if(cellGrid.getCellAtPosition({position.x - wallSize, position.y - wallSize}).wall_bottom.exists){
             cellGrid.getCellAtPosition({position.x - wallSize, position.y - wallSize}).wall_bottom.visible = true;
-            ResetPlayer();
+            score--;
+            //ResetPlayer();
         } else {
             position.y += cellSize;
         }
@@ -51,16 +59,27 @@ void Player::Update(CellGrid& cellGrid){
         if(IsThereCell({(position.x - wallSize - cellGrid.getOrigin().x)/cellSize, (position.y - wallSize - cellGrid.getOrigin().y - cellSize)/cellSize}, cellGrid)){
             if(cellGrid.getCellAtPosition({position.x - wallSize, position.y - wallSize - cellSize}).wall_bottom.exists){
                 cellGrid.getCellAtPosition({position.x - wallSize, position.y - wallSize - cellSize}).wall_bottom.visible = true;
-                ResetPlayer();
+                score--;
+                //ResetPlayer();
             } else {
                position.y -= cellSize;
             }
         }
     }
+
+    if(IsKeyPressed(KEY_SPACE)){
+        flare.FindShortestPath(cellGrid, {position.x - wallSize, position.y - wallSize}, {float(cellGrid.getColumns())-1, float(cellGrid.getRows())-1});
+    }
+
+    if(score < 0){score = 0;}
 }
 
 void Player::ResetPlayer(){
     this->position = this->initialPosition;
+}
+
+void Player::ResetScore(){
+    this->score = 10;
 }
 
 bool Player::IsThereCell(Vector2 cellPosition, CellGrid& cellGrid){
@@ -73,6 +92,8 @@ bool Player::IsThereCell(Vector2 cellPosition, CellGrid& cellGrid){
     return true;
 }
 
+//TODO kill the flare instead of continuously Drawing it
 void Player::Draw(){
-    DrawRectangle(position.x, position.y, size.x, size.y, RED);
+    flare.Draw();
+    DrawRectangle(position.x, position.y, size.x, size.y, PINK);
 }

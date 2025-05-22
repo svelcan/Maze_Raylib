@@ -3,6 +3,7 @@
 #include "Constants.hpp"
 #include "Menu.hpp"
 
+#include <iostream>
 #include <math.h>
 #include <time.h>
 
@@ -25,11 +26,14 @@ int main()
     Menu mazesizeMenu = Menu();
     mazesizeMenu.CreateMazesizeMenu();
 
+    Menu howtoplayMenu = Menu();
+    howtoplayMenu.CreateHowtoplayMenu();
+
 
     Game game = Game();
 
     //Game state management
-    enum class GameState{ MAIN_MENU, PLAYING, EXITING, MULTIPLAYER_MENU, SINGLEPLAYER_MENU, MAZESIZE_MENU, POSITIONRESET_MENU};
+    enum class GameState{ MAIN_MENU, PLAYING, EXITING, MULTIPLAYER_MENU, SINGLEPLAYER_MENU, MAZESIZE_MENU, POSITIONRESET_MENU, HOWTOPLAY_MENU};
     GameState currentState = GameState::MAIN_MENU;
 
     // Create a render texture at the game's internal resolution
@@ -70,6 +74,8 @@ int main()
                     case 1:
                         currentState = GameState::EXITING;
                         break;
+                    case 2:
+                        currentState = GameState::HOWTOPLAY_MENU;
                 }
                 break;
                 
@@ -82,6 +88,7 @@ int main()
                         currentState = GameState::MAZESIZE_MENU; 
                         break;
                     case 1: 
+                        game.getCellGrid().GenerateBackTrackingMaze();
                         currentState = GameState::PLAYING; 
                         break;
                     case 2: 
@@ -107,6 +114,12 @@ int main()
                         game.setCellGrid(CellGrid({17,31}));
                         currentState = GameState::SINGLEPLAYER_MENU; 
                         break;
+                }
+                break;
+
+            case GameState::HOWTOPLAY_MENU:
+                if(howtoplayMenu.Update(deltaTime) == 0){
+                    currentState = GameState::MAIN_MENU; 
                 }
                 break;
 
@@ -137,6 +150,10 @@ int main()
                     break;
                 case GameState::MULTIPLAYER_MENU:
                     //singleplayerMenu.Draw();
+                    break;
+                case GameState::HOWTOPLAY_MENU:
+                    howtoplayMenu.Draw();
+                    DrawText("Movement: Arrow keys, wasd \n Return: R \n Start playing: V", 1, 1, 10, WHITE);
                     break;
                 default:
                     break;

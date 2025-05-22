@@ -16,8 +16,10 @@ void Menu::ResetButtons(){
 void Menu::CreateMainMenu(){
     ClickableObject startButton = ClickableObject({60, 30},{150, 40},"Singleplayer");
     ClickableObject exitButton = ClickableObject({60, 80},{150, 40},"Exit");
+    ClickableObject howtoplayButton = ClickableObject({60, 130},{150, 40},"How to Play");
     AddButton(startButton);
     AddButton(exitButton);
+    AddButton(howtoplayButton);
 }
 
 void Menu::CreateSingleplayerMenu(){
@@ -36,6 +38,11 @@ void Menu::CreateMazesizeMenu(){
     AddButton(fiveButton);
     AddButton(tenButton);
     AddButton(twentyButton);
+}
+
+void Menu::CreateHowtoplayMenu(){
+    ClickableObject returnButton = ClickableObject({60, 130},{150, 40},"Return");
+    AddButton(returnButton);
 }
 
 int Menu::Update(float deltaTime){

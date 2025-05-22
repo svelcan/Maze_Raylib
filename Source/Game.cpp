@@ -1,6 +1,7 @@
 #include "Game.hpp"
 #include "CellGrid.hpp"
 #include <raylib.h>
+#include <string>
 
 
 Game::Game(){
@@ -29,14 +30,18 @@ void Game::setCellGrid(CellGrid cellGrid){
 void Game::Draw() {
     cellGrid.Draw();
     player.Draw();
+    DrawText(("Score: " + std::to_string(player.score)).c_str(), 1, 170, 10, WHITE);
 }
 
 int Game::Update(float deltaTime){
-    player.Update(cellGrid);
-    if(IsKeyPressed(KEY_SPACE)){
-        cellGrid.GenerateBackTrackingMaze();
+    player.Update(cellGrid, deltaTime);
+    if(IsKeyPressed(KEY_V)){
+        //Start moving player, make cells invisible
+        cellGrid.setVisibleWalls(false);
+        player.allowMovement = true;
     }
     if(IsKeyPressed(KEY_R)){
+        player.ResetPlayer();
         return 0;
     }
     return -1;

@@ -8,7 +8,6 @@
 
 class Game{
     private:
-
     //Sound eatSound;
     //Sound wallSound;
 

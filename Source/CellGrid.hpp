@@ -32,6 +32,8 @@ class CellGrid{
     //This might or might not be useful so for the time being I'm leaving it
     Cell& getCellAtPosition(Vector2 pos);
 
+    void setVisibleWalls(bool visible);
+
 
     //Draws to the screen
     void Draw();
@@ -45,4 +47,6 @@ class CellGrid{
     void GenerateRandomMaze();
     void GenerateBackTrackingMaze();
     bool isValid(Vector2 position);
+
+    void ResetVisited();
 };

@@ -20,6 +20,7 @@ class Menu{
     void CreateSingleplayerMenu();
     void CreateMazesizeMenu();
     void CreatePositionresetMenu();
+    void CreateHowtoplayMenu();
 
     //Updating and Drawing
     int Update(float deltaTime);

@@ -5,14 +5,14 @@
 
 Cell::Cell(){
     this->position = {0,0};
-    this->wall_bottom = {true, false};
-    this->wall_right = {true, false}; 
+    this->wall_bottom = {true, true};
+    this->wall_right = {true, true}; 
 }
 
 Cell::Cell(Vector2 position){
     this->position = position;    
-    this->wall_bottom = {true, false};
-    this->wall_right = {true, false}; 
+    this->wall_bottom = {true, true};
+    this->wall_right = {true, true}; 
 }
 
 Cell::~Cell(){
@@ -35,15 +35,15 @@ void Cell::Draw(){
     //Draw the cell's main area
     DrawRectangle(position.x, position.y, cellSize, cellSize, BLUE);
     //Remember to draw the wall that always exists
-    DrawRectangle(position.x + cellSize - wallSize, position.y + cellSize - wallSize, wallSize, wallSize, RED);
+    DrawRectangle(position.x + cellSize - wallSize, position.y + cellSize - wallSize, wallSize, wallSize, BLACK);
 
     //Draw bottom wall if it exists AND is visible
     if (wall_bottom.exists && wall_bottom.visible) {
-        DrawRectangle(position.x, position.y + cellSize - wallSize, cellSize, wallSize, RED);
+        DrawRectangle(position.x, position.y + cellSize - wallSize, cellSize, wallSize, BLACK);
     }
 
     // Draw right wall if it exists AND is visible
     if (wall_right.exists && wall_right.visible) {
-        DrawRectangle(position.x + cellSize - wallSize, position.y, wallSize, cellSize, RED);
+        DrawRectangle(position.x + cellSize - wallSize, position.y, wallSize, cellSize, BLACK);
     }
 }
