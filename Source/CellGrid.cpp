@@ -1,6 +1,5 @@
 #include "CellGrid.hpp"
 #include "Constants.hpp"
-#include <iostream>
 #include <raylib.h>
 #include <raymath.h>
 #include <stack>
@@ -45,6 +44,15 @@ int CellGrid::getRows(){
 
 Vector2 CellGrid::getOrigin(){
     return this->position;
+}
+
+void CellGrid::setVisibleWalls(bool visible){
+    for (int y = 0; y < rows; ++y) {
+        for (int x = 0; x < columns; ++x) {
+            grid[y][x].wall_bottom.visible = visible;
+            grid[y][x].wall_right.visible = visible;
+        }
+    }
 }
 
 /*
@@ -109,6 +117,7 @@ void CellGrid::GenerateBackTrackingMaze(){
                 mazeStack.push(nextCell);
                 nextCell.visited = true;
                 cellPositionInGrid = nextPosition;
+                options = {up, down, left, right};
             } else {
                 options.erase(options.begin() + randomDirection);
             }
@@ -118,7 +127,6 @@ void CellGrid::GenerateBackTrackingMaze(){
         //If there aren't any valid cells then backtrack biatch
         mazeStack.pop();
     }
-    std::cout << "The one piece is real!!!";
 }
 
 
@@ -138,8 +146,16 @@ void CellGrid::ResetGrid(){
         for (int x = 0; x < columns; ++x) {
             grid[y][x].wall_bottom.exists = true;
             grid[y][x].wall_right.exists = true;
-            grid[y][x].wall_bottom.visible = false;
-            grid[y][x].wall_right.visible = false;
+            grid[y][x].wall_bottom.visible = true;
+            grid[y][x].wall_right.visible = true;
+            grid[y][x].visited = false;
+        }
+    }
+}
+
+void CellGrid::ResetVisited(){
+    for (int y = 0; y < rows; ++y) {
+        for (int x = 0; x < columns; ++x) {
             grid[y][x].visited = false;
         }
     }
