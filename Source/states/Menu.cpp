@@ -1,5 +1,4 @@
 #include "Menu.hpp"
-#include "ClickableObject.hpp"
 #include <raylib.h>
 
 Menu::Menu(){

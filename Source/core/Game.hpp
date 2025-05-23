@@ -1,7 +1,7 @@
 #pragma once
 
-#include "CellGrid.hpp"
-#include "Player.hpp"
+#include "../objects/CellGrid.hpp"
+#include "../objects/Player.hpp"
 #include <raylib.h>
 
 

@@ -1,5 +1,5 @@
 #include "CellGrid.hpp"
-#include "Constants.hpp"
+#include "../core/Constants.hpp"
 #include <raylib.h>
 #include <raymath.h>
 #include <stack>

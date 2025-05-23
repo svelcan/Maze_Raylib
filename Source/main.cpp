@@ -1,7 +1,7 @@
 #include "raylib.h"
-#include "Game.hpp"
-#include "Constants.hpp"
-#include "Menu.hpp"
+#include "core/Game.hpp"
+#include "core/Constants.hpp"
+#include "states/Menu.hpp"
 
 #include <math.h>
 #include <time.h>

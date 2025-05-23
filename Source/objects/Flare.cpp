@@ -1,10 +1,9 @@
 #include "Flare.hpp"
 
-#include <iostream>
 #include <raylib.h>
 #include "Cell.hpp"
 #include "CellGrid.hpp"
-#include "Constants.hpp"
+#include "../core/Constants.hpp"
 #include <raymath.h>
 #include <stack>
 
@@ -124,7 +123,7 @@ void Flare::Update(float deltaTime){
             // Get new target
             targetPosition = movementOrder.top();
             movementOrder.pop();
-            //random
+
             // Setup for new movement
             startPosition = currentPosition;
             moveProgress = 0.0f;

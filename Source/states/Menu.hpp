@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "ClickableObject.hpp"
+#include "../objects/ClickableObject.hpp"
 
 class Menu{
     private:

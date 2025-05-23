@@ -1,7 +1,7 @@
 #include "Player.hpp"
 #include "Cell.hpp"
 #include "CellGrid.hpp"
-#include "Constants.hpp"
+#include "../core/Constants.hpp"
 #include <raylib.h>
 
 
