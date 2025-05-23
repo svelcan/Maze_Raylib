@@ -124,7 +124,7 @@ void Flare::Update(float deltaTime){
             // Get new target
             targetPosition = movementOrder.top();
             movementOrder.pop();
-
+            //random
             // Setup for new movement
             startPosition = currentPosition;
             moveProgress = 0.0f;
