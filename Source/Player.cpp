@@ -23,6 +23,7 @@ void Player::setPosition(Vector2 position){
 }
 
 void Player::Update(CellGrid& cellGrid, float deltaTime){
+    //Update Player's initial position based on the new maze
     if(lastKnownMazeSize.x != cellGrid.getColumns() || lastKnownMazeSize.y != cellGrid.getRows()){
         initialPosition = {cellGrid.getCell(0, 0).getPosition().x + wallSize, cellGrid.getCell(0, 0).getPosition().y + wallSize};
         position = initialPosition;
@@ -31,6 +32,12 @@ void Player::Update(CellGrid& cellGrid, float deltaTime){
     }
 
     flare.Update(deltaTime);
+
+    if(IsKeyPressed(KEY_V)){
+        //Start moving player, make cells invisible
+        cellGrid.setVisibleWalls(false);
+        allowMovement = true;
+    }
     
     if(!allowMovement){
         return;

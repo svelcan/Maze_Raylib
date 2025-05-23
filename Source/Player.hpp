@@ -13,7 +13,7 @@ class Player{
 
     Vector2 lastKnownMazeSize = {10,10};
 
-    Flare flare = Flare();
+    Flare flare = Flare(); 
     
 
     public:

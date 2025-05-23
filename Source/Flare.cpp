@@ -25,10 +25,14 @@ Flare::Flare(){
 
 //I'm thinking of storing Vector2 inside a vector with the positions that the flare is supposed to follow
 void Flare::FindShortestPath(CellGrid& cellGrid, Vector2 positionCell, Vector2 destination){
+    //TODO when the objective changes to coins this bug catcher will probably be useless
+    //This prevents a flare from being thrown if the player is standing in the objective
+    if(positionCell == Vector2Add(destination*cellSize, cellGrid.getOrigin())){
+        return;
+    }
     Vector2 cellPositionInGrid = Vector2Subtract(positionCell, cellGrid.getOrigin())/cellSize;
     cellGrid.ResetVisited();
     Vector2 destinationPosition = Vector2Add(destination*cellSize, cellGrid.getOrigin());
-    std::cout << "x" << destinationPosition.x<< "y" << destinationPosition.y<< std::endl;
 
     std::stack<Cell> mazeStack;
 
@@ -61,6 +65,10 @@ void Flare::FindShortestPath(CellGrid& cellGrid, Vector2 positionCell, Vector2 d
                 
 
                 if(mazeStack.top().getPosition() == destinationPosition){
+                    //Placeholder for now so that the animation doesn't end abruptly
+                    movementOrder.push({0,0});
+
+
                     while(!mazeStack.empty()){
                         movementOrder.push(mazeStack.top().getPosition());
                         mazeStack.pop();
@@ -126,7 +134,8 @@ void Flare::Update(float deltaTime){
 
         //Update movement progress
         timeSinceMoveStart += deltaTime;
-        moveProgress = timeSinceMoveStart / moveDuration;
+        const float safeMoveDuration = std::max(moveDuration, 0.1f);
+        moveProgress = timeSinceMoveStart / safeMoveDuration;
 
         // Clamp progress to 1.0
         if (moveProgress > 1.0f) {

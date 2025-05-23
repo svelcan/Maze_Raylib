@@ -35,13 +35,9 @@ void Game::Draw() {
 
 int Game::Update(float deltaTime){
     player.Update(cellGrid, deltaTime);
-    if(IsKeyPressed(KEY_V)){
-        //Start moving player, make cells invisible
-        cellGrid.setVisibleWalls(false);
-        player.allowMovement = true;
-    }
     if(IsKeyPressed(KEY_R)){
         player.ResetPlayer();
+        player.allowMovement = false;
         return 0;
     }
     return -1;

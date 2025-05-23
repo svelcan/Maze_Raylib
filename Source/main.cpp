@@ -3,7 +3,6 @@
 #include "Constants.hpp"
 #include "Menu.hpp"
 
-#include <iostream>
 #include <math.h>
 #include <time.h>
 

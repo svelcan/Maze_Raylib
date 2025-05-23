@@ -15,7 +15,6 @@ class Flare{
     float moveDuration = 0.2f;
     float moveProgress;
     float timeSinceMoveStart;
-    float speed = 4.0f;
 
     public:
     Flare();
