@@ -85,6 +85,7 @@ int main()
                         break;
                     case 2:
                         currentState = GameState::HOWTOPLAY_MENU;
+                        break;
                     case 3:
                         currentState = GameState::SCORES_MENU;
                         break;

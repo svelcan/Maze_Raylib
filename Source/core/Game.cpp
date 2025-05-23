@@ -50,8 +50,11 @@ int Game::Update(float deltaTime){
             levelCleared = false;
         return 0;
         }
-        if(IsKeyPressed(KEY_N)){
 
+        if(IsKeyPressed(KEY_N)){
+            setCellGrid(CellGrid({cellGrid.getRows() + 1,cellGrid.getColumns() + 1}));
+            cellGrid.GenerateBackTrackingMaze();
+            levelCleared = false;
         }
     }
 
