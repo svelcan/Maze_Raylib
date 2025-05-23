@@ -37,7 +37,6 @@ int main()
 
     // Create a render texture at the game's internal resolution
     RenderTexture2D target = LoadRenderTexture(gameWidth, gameHeight);
-    SetTargetFPS(60);
 
     while (!WindowShouldClose())
     {
