@@ -1,16 +1,15 @@
 #pragma once
 
-#include "Menu.hpp"
 #include "GameState.hpp"
+#include "../core/Game.hpp"
 
-class MainMenuState : public GameState {
-    Menu menu;
-    public:
-    MainMenuState();
+class PlayingState : public GameState {
+    Game game;
+
+public:
+    PlayingState(CellGrid grid);
     
     void Update(float deltaTime) override;
-    
     void Draw() override;
-    
     GameState* GetNextState() override;
 };
