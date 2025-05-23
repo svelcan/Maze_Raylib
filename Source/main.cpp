@@ -6,11 +6,19 @@
 #include <math.h>
 #include <time.h>
 
+#include <iostream>
+#include <fstream>
+#include <string>
+
 
 
 
 int main()
 {
+    //DEBUG
+
+
+
     //Initiate window and random seed
     InitWindow(screenWidth, screenHeight, "Magic_Maze");
     SetRandomSeed(time(NULL));
@@ -28,11 +36,14 @@ int main()
     Menu howtoplayMenu = Menu();
     howtoplayMenu.CreateHowtoplayMenu();
 
+    Menu scoresMenu = Menu();
+    scoresMenu.CreateScoresMenu();
+
 
     Game game = Game();
 
     //Game state management
-    enum class GameState{ MAIN_MENU, PLAYING, EXITING, MULTIPLAYER_MENU, SINGLEPLAYER_MENU, MAZESIZE_MENU, POSITIONRESET_MENU, HOWTOPLAY_MENU};
+    enum class GameState{ MAIN_MENU, PLAYING, EXITING, MULTIPLAYER_MENU, SINGLEPLAYER_MENU, MAZESIZE_MENU, POSITIONRESET_MENU, HOWTOPLAY_MENU, SCORES_MENU};
     GameState currentState = GameState::MAIN_MENU;
 
     // Create a render texture at the game's internal resolution
@@ -74,6 +85,9 @@ int main()
                         break;
                     case 2:
                         currentState = GameState::HOWTOPLAY_MENU;
+                    case 3:
+                        currentState = GameState::SCORES_MENU;
+                        break;
                 }
                 break;
                 
@@ -121,6 +135,12 @@ int main()
                 }
                 break;
 
+            case GameState::SCORES_MENU:
+                if(scoresMenu.Update(deltaTime) == 0){
+                    currentState = GameState::MAIN_MENU; 
+                }
+                break;
+
             default:
                 break;
         }
@@ -153,6 +173,31 @@ int main()
                     howtoplayMenu.Draw();
                     DrawText("Movement: Arrow keys, wasd \n Return: R \n Start playing: V", 1, 1, 10, WHITE);
                     break;
+                case GameState::SCORES_MENU:
+                {
+                    scoresMenu.Draw();
+                    // Open the file
+                    std::ifstream file("scores.txt");
+
+                    // Check if the file opened successfully
+                    if (!file.is_open()) {
+                        std::cerr << "Error opening file" << std::endl;
+                        return 1;
+                    }
+
+                    std::string line;
+
+                    // Read file line by line
+                    for (int i = 0; std::getline(file, line); i++) {
+                        std::string text = std::to_string(i+1) + ".- " + line;
+                        DrawText(text.c_str(), 140, 20 + i*10, 10, WHITE);
+                    }
+    
+                    // Close the file
+                    file.close();
+                    break;
+                }
+
                 default:
                     break;
             }

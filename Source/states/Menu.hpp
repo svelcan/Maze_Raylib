@@ -21,6 +21,7 @@ class Menu{
     void CreateMazesizeMenu();
     void CreatePositionresetMenu();
     void CreateHowtoplayMenu();
+    void CreateScoresMenu();
 
     //Updating and Drawing
     int Update(float deltaTime);

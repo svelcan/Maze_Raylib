@@ -23,9 +23,9 @@ CellGrid::CellGrid(int rows, int columns){
         }
     }
 
-    coin.position = getCell((float(rows)-1), float(columns)-1).getPosition();
-    coint.position = getCell((float(rows)-1), 0).getPosition();
-    coinp.position = getCell(0, float(columns)-1).getPosition();
+    coin = {true, true, getCell((float(rows)-1), float(columns)-1).getPosition()};
+    coint = {true, true, getCell((float(rows)-1), 0).getPosition()};
+    coinp = {true, true, getCell(0, float(columns)-1).getPosition()};
 }
 
 Cell& CellGrid::getCell(int row, int col) {
@@ -57,6 +57,17 @@ void CellGrid::setVisibleWalls(bool visible){
             grid[y][x].wall_right.visible = visible;
         }
     }
+}
+
+/*
+* COINS ----------------------------------------------------------------------------------------------
+*/
+
+bool CellGrid::CoinsCollected(){
+    if(!coin.visible && !coint.visible && !coinp.visible){
+        return true;
+    }
+    return false;
 }
 
 /*
@@ -164,7 +175,9 @@ void CellGrid::ResetVisited(){
     }
 }
 
-
+/*
+* RENDERING ----------------------------------------------------------------------------------------------
+*/
 
 void CellGrid::Draw(){
     for (float y = 0; y < rows; ++y) {
@@ -173,7 +186,13 @@ void CellGrid::Draw(){
         }
     }
 
-    coin.Draw();
-    coint.Draw();
-    coinp.Draw();
+    if(coin.visible){
+        coin.Draw();
+    }
+    if(coint.visible){
+        coint.Draw();
+    }
+    if(coinp.visible){
+        coinp.Draw();
+    }
 }

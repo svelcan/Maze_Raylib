@@ -17,11 +17,15 @@ class Flare{
     float timeSinceMoveStart;
 
     public:
+
     Flare();
+
+    void setStartPosition(Vector2 position);
 
     void FindShortestPath(CellGrid& grid, Vector2 positionCell, Vector2 destination);
     bool isValid(Vector2 currentPosition, Vector2 nextPosition, Vector2 direction, CellGrid& cellGrid);
 
+    bool isMovementOrderEmpty();
     void Update(float deltaTime);
     void Draw();
 };

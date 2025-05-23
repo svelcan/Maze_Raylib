@@ -13,6 +13,8 @@ class Game{
 
     Player player;
     CellGrid cellGrid;
+
+    bool levelCleared = false;
     
 
     public:

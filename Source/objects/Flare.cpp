@@ -1,5 +1,6 @@
 #include "Flare.hpp"
 
+#include <iostream>
 #include <raylib.h>
 #include "Cell.hpp"
 #include "CellGrid.hpp"
@@ -16,7 +17,6 @@ Vector2 right = {1, 0};
 
 
 Flare::Flare(){
-    this->currentPosition = {-100, -100};
 }
 
 //Similar to the backtracking algorithm, we explore the maze and If we get to a point where there are no cells
@@ -115,36 +115,53 @@ bool Flare::isValid(Vector2 currentPosition, Vector2 nextPosition, Vector2 direc
     return !cellGrid.getCell(nextPosition.y, nextPosition.x).visited;
 }
 
+void Flare::setStartPosition(Vector2 position){
+    this->startPosition = position;
+}
+
+bool Flare::isMovementOrderEmpty(){
+    return movementOrder.empty();
+}
+
 void Flare::Update(float deltaTime){
 
-    if(!movementOrder.empty()){
-        //If we don't have a current target or we reached the target
-        if(moveProgress >= 1.0f){
+    if (!movementOrder.empty()) {
+        // Check if we need a new target
+        if (moveProgress >= 1.0f) {
             // Get new target
             targetPosition = movementOrder.top();
             movementOrder.pop();
 
-            // Setup for new movement
-            startPosition = currentPosition;
-            moveProgress = 0.0f;
-            timeSinceMoveStart = 0.0f;
-
+            if (currentPosition.x == -100 && currentPosition.y == -100) {
+                currentPosition = targetPosition;
+                startPosition = targetPosition; // Avoid lerping from (-1000,-1000)
+                moveProgress = 1.0f; // Mark movement as complete
+            } else {
+                // Normal movement setup
+                startPosition = currentPosition;
+                moveProgress = 0.0f;
+                timeSinceMoveStart = 0.0f;
+            }
         }
 
-        //Update movement progress
-        timeSinceMoveStart += deltaTime;
-        const float safeMoveDuration = std::max(moveDuration, 0.1f);
-        moveProgress = timeSinceMoveStart / safeMoveDuration;
+        // Only update if we have a valid duration
+        if (moveDuration > 0.0f) {
+            // Update movement progress
+            timeSinceMoveStart += deltaTime;
+            moveProgress = timeSinceMoveStart / moveDuration;
 
-        // Clamp progress to 1.0
-        if (moveProgress > 1.0f) {
-            moveProgress = 1.0f;
+            // Clamp progress to 1.0
+            moveProgress = std::min(moveProgress, 1.0f);
+
+            // Interpolate position
+            currentPosition = {
+                startPosition.x + (targetPosition.x - startPosition.x) * moveProgress,
+                startPosition.y + (targetPosition.y - startPosition.y) * moveProgress
+            };
         }
-
-        // Interpolate position
-        currentPosition = {startPosition.x + (targetPosition.x - startPosition.x) * moveProgress,startPosition.y + (targetPosition.y - startPosition.y) * moveProgress};
-    } else{
-        currentPosition = {-1000, -1000};
+    } else {
+        currentPosition = {-100, -100};  // Or whatever your "hidden" position should be
+        moveProgress = 1.0f;
     }
 }
 

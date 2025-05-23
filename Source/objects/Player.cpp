@@ -2,7 +2,14 @@
 #include "Cell.hpp"
 #include "CellGrid.hpp"
 #include "../core/Constants.hpp"
+#include <iostream>
 #include <raylib.h>
+#include <raymath.h>
+
+#include <fstream>
+#include <vector>
+#include <algorithm>
+#include <string>
 
 
 Player::Player(){
@@ -31,8 +38,6 @@ void Player::Update(CellGrid& cellGrid, float deltaTime){
         lastKnownMazeSize = {float(cellGrid.getColumns()), float(cellGrid.getRows())};
     }
 
-    flare.Update(deltaTime);
-
     if(IsKeyPressed(KEY_V)){
         //Start moving player, make cells invisible
         cellGrid.setVisibleWalls(false);
@@ -41,6 +46,27 @@ void Player::Update(CellGrid& cellGrid, float deltaTime){
     
     if(!allowMovement){
         return;
+    }
+
+    //If you touch a coin it becomes invisible
+
+    if(Vector2Equals(cellGrid.coin.getPosition(), Vector2Subtract(this->position, {float(wallSize), float(wallSize)}))){
+        if(cellGrid.coin.visible == true){
+            score +=5;
+        }
+        cellGrid.coin.visible = false;
+    }
+    if(Vector2Equals(cellGrid.coint.getPosition(), Vector2Subtract(this->position, {float(wallSize), float(wallSize)}))){
+        if(cellGrid.coint.visible == true){
+            score +=5;
+        }
+        cellGrid.coint.visible = false;
+    }
+    if(Vector2Equals(cellGrid.coinp.getPosition(), Vector2Subtract(this->position, {float(wallSize), float(wallSize)}))){
+        if(cellGrid.coinp.visible == true){
+            score +=5;
+        }
+        cellGrid.coinp.visible = false;
     }
 
     //If the player wants to move we check if there is a wall, if there is then reset player and show wall
@@ -84,9 +110,13 @@ void Player::Update(CellGrid& cellGrid, float deltaTime){
         }
     }
 
-    if(IsKeyPressed(KEY_SPACE)){
+    if(IsKeyPressed(KEY_SPACE) && flare.isMovementOrderEmpty()){
         flare.FindShortestPath(cellGrid, {position.x - wallSize, position.y - wallSize}, {float(cellGrid.getColumns())-1, float(cellGrid.getRows())-1});
+        score -= 2;
     }
+
+    flare.Update(deltaTime);
+
 
     if(score < 0){score = 0;}
 }
@@ -99,6 +129,41 @@ void Player::ResetScore(){
     this->score = 10;
 }
 
+void Player::SaveScore() {
+    const std::string filename = "scores.txt";
+    std::vector<int> scores;
+
+    // 1. Read existing scores
+    std::ifstream inFile(filename);
+    if (inFile.is_open()) {
+        int currentScore;
+        while (inFile >> currentScore) {
+            scores.push_back(currentScore);
+        }
+        inFile.close();
+    }
+
+    // 2. Add the new score
+    scores.push_back(score);
+
+    // 3. Sort in descending order
+    std::sort(scores.begin(), scores.end(), std::greater<int>());
+
+    // 4. Keep only top 5
+    if (scores.size() > 5) {
+        scores.resize(5);
+    }
+
+    // 5. Write back to file
+    std::ofstream outFile(filename);
+    if (outFile.is_open()) {
+        for (int s : scores) {
+            outFile << s << "\n";
+        }
+        outFile.close();
+    }
+}
+
 bool Player::IsThereCell(Vector2 cellPosition, CellGrid& cellGrid){
     if(cellPosition.x < 0
         || cellPosition.y < 0
@@ -109,7 +174,6 @@ bool Player::IsThereCell(Vector2 cellPosition, CellGrid& cellGrid){
     return true;
 }
 
-//TODO kill the flare instead of continuously Drawing it
 void Player::Draw(){
     flare.Draw();
     DrawRectangle(position.x, position.y, size.x, size.y, PINK);

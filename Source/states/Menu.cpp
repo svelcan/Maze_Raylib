@@ -16,9 +16,11 @@ void Menu::CreateMainMenu(){
     ClickableObject startButton = ClickableObject({60, 30},{150, 40},"Singleplayer");
     ClickableObject exitButton = ClickableObject({60, 80},{150, 40},"Exit");
     ClickableObject howtoplayButton = ClickableObject({60, 130},{150, 40},"How to Play");
+    ClickableObject scoresButton = ClickableObject({230, 110},{80, 50},"Highest\nScores");
     AddButton(startButton);
     AddButton(exitButton);
     AddButton(howtoplayButton);
+    AddButton(scoresButton);
 }
 
 void Menu::CreateSingleplayerMenu(){
@@ -40,6 +42,11 @@ void Menu::CreateMazesizeMenu(){
 }
 
 void Menu::CreateHowtoplayMenu(){
+    ClickableObject returnButton = ClickableObject({60, 130},{150, 40},"Return");
+    AddButton(returnButton);
+}
+
+void Menu::CreateScoresMenu(){
     ClickableObject returnButton = ClickableObject({60, 130},{150, 40},"Return");
     AddButton(returnButton);
 }

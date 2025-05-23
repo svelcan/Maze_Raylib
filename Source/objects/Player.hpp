@@ -13,7 +13,7 @@ class Player{
 
     Vector2 lastKnownMazeSize = {10,10};
 
-    Flare flare = Flare(); 
+    Flare flare = Flare();
     
 
     public:
@@ -31,6 +31,7 @@ class Player{
 
     void ResetPlayer();
     void ResetScore();
+    void SaveScore();
     bool IsThereCell(Vector2 positionCell, CellGrid& cellGrid);
 
     void Update(CellGrid& cellGrid, float deltaTime);

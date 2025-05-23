@@ -25,6 +25,10 @@ class CellGrid{
         bool visible;
         Vector2 position;
 
+        Vector2 getPosition(){
+            return position;
+        }
+
         void Draw(){
             DrawRectangle(position.x+3, position.y+3, 2, 2, YELLOW);
         }
@@ -49,12 +53,8 @@ class CellGrid{
     void setVisibleWalls(bool visible);
 
 
-    //Draws to the screen
-    void Draw();
-
-
-
-
+    //Coins stuff
+    bool CoinsCollected();
 
     //Maze algorithms
     //This serves no purpose but is funny for now
@@ -63,4 +63,9 @@ class CellGrid{
     bool isValid(Vector2 position);
 
     void ResetVisited();
+
+
+
+    //Draws to the screen
+    void Draw();
 };
