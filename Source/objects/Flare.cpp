@@ -26,12 +26,12 @@ Flare::Flare(){
 void Flare::FindShortestPath(CellGrid& cellGrid, Vector2 positionCell, Vector2 destination){
     //TODO when the objective changes to coins this bug catcher will probably be useless
     //This prevents a flare from being thrown if the player is standing in the objective
-    if(positionCell == Vector2Add(destination*cellSize, cellGrid.getOrigin())){
+    if(Vector2Equals(positionCell, Vector2Add({Vector2Scale(destination, cellSize)}, cellGrid.getOrigin()))){
         return;
     }
-    Vector2 cellPositionInGrid = Vector2Subtract(positionCell, cellGrid.getOrigin())/cellSize;
+    Vector2 cellPositionInGrid = Vector2Scale(Vector2Subtract(positionCell, cellGrid.getOrigin()), 1.0f/cellSize);
     cellGrid.ResetVisited();
-    Vector2 destinationPosition = Vector2Add(destination*cellSize, cellGrid.getOrigin());
+    Vector2 destinationPosition = Vector2Add(Vector2Scale(destination, cellSize), cellGrid.getOrigin());
 
     std::stack<Cell> mazeStack;
 
@@ -39,7 +39,7 @@ void Flare::FindShortestPath(CellGrid& cellGrid, Vector2 positionCell, Vector2 d
     cellGrid.getCell(cellPositionInGrid.y, cellPositionInGrid.x).visited = true;
 
     while(true){
-        cellPositionInGrid = (mazeStack.top().getPosition()- cellGrid.getOrigin())/cellSize;
+        cellPositionInGrid = Vector2Scale((Vector2Subtract(mazeStack.top().getPosition(), cellGrid.getOrigin())), 1.0f/cellSize);
         std::vector<Vector2> options = {up, down, left, right};
 
 
@@ -63,7 +63,7 @@ void Flare::FindShortestPath(CellGrid& cellGrid, Vector2 positionCell, Vector2 d
 
                 
 
-                if(mazeStack.top().getPosition() == destinationPosition){
+                if(Vector2Equals(mazeStack.top().getPosition(), destinationPosition)){
                     //Placeholder for now so that the animation doesn't end abruptly
                     movementOrder.push({0,0});
 

@@ -99,7 +99,8 @@ void CellGrid::GenerateBackTrackingMaze(){
     Vector2 right = {1, 0};
 
     while(!mazeStack.empty()){
-        Vector2 cellPositionInGrid = (Vector2Subtract(mazeStack.top().getPosition(),origin))/cellSize;
+        Vector2 cellPositionInGrid = Vector2Divide(Vector2Subtract(mazeStack.top().getPosition(), origin), 
+                                                  Vector2{static_cast<float>(cellSize), static_cast<float>(cellSize)});
         std::vector<Vector2> options = {up, down, left, right};
         while(!options.empty()){            
             int randomDirection = GetRandomValue(0, options.size()-1);
