@@ -12,13 +12,12 @@ class Player{
     Texture2D texture;
 
     Vector2 lastKnownMazeSize = {10,10};
-
-    Flare flare = Flare();
     
 
     public:
     bool allowMovement = false;
     int score = 10;
+    Flare flare = Flare();
     
     //Constructor & Deconstructor
     Player();

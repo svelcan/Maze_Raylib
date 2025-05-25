@@ -1,6 +1,5 @@
 #include "Flare.hpp"
 
-#include <iostream>
 #include <raylib.h>
 #include "Cell.hpp"
 #include "CellGrid.hpp"
@@ -21,16 +20,15 @@ Flare::Flare(){
 
 //Similar to the backtracking algorithm, we explore the maze and If we get to a point where there are no cells
 //available then that means that path is a dead end, so we backtrack to the last time we had to make a decision
-
-//I'm thinking of storing Vector2 inside a vector with the positions that the flare is supposed to follow
 void Flare::FindShortestPath(CellGrid& cellGrid, Vector2 positionCell, Vector2 destination){
     //TODO when the objective changes to coins this bug catcher will probably be useless
     //This prevents a flare from being thrown if the player is standing in the objective
     if(Vector2Equals(positionCell, Vector2Add({Vector2Scale(destination, cellSize)}, cellGrid.getOrigin()))){
         return;
     }
-    Vector2 cellPositionInGrid = Vector2Scale(Vector2Subtract(positionCell, cellGrid.getOrigin()), 1.0f/cellSize);
+
     cellGrid.ResetVisited();
+    Vector2 cellPositionInGrid = Vector2Scale(Vector2Subtract(positionCell, cellGrid.getOrigin()), 1.0f/cellSize);
     Vector2 destinationPosition = Vector2Add(Vector2Scale(destination, cellSize), cellGrid.getOrigin());
 
     std::stack<Cell> mazeStack;
@@ -115,12 +113,34 @@ bool Flare::isValid(Vector2 currentPosition, Vector2 nextPosition, Vector2 direc
     return !cellGrid.getCell(nextPosition.y, nextPosition.x).visited;
 }
 
-void Flare::setStartPosition(Vector2 position){
-    this->startPosition = position;
+void Flare::ChooseCoin(Vector2 playerPosition, CellGrid& cellGrid){
+    unsigned int least = 10000; //Arbitrarily large number (I think the shortest path can be max 17*31 = 527 but I'm not gonna wager on that)
+    std::stack<Vector2> movementOrderAuxiliar;
+
+    //This will let live the smallest movementOrder
+    for(CellGrid::Coin coin : cellGrid.coins){
+        Vector2 coinPositionInGrid = Vector2Scale(Vector2Subtract(coin.position, cellGrid.getOrigin()), 1.0f/cellSize);
+        FindShortestPath(cellGrid, playerPosition, coinPositionInGrid);
+
+        if(movementOrder.size() < least){
+            least = movementOrder.size();
+            movementOrderAuxiliar = movementOrder;
+        }
+        Reset();
+    }
+    movementOrder = movementOrderAuxiliar;
 }
 
 bool Flare::isMovementOrderEmpty(){
     return movementOrder.empty();
+}
+
+void Flare::Reset(){
+    while (!movementOrder.empty()) {
+        movementOrder.pop();
+    }
+    currentPosition = {-100, -100};
+    moveProgress = 1;
 }
 
 void Flare::Update(float deltaTime){
@@ -134,7 +154,7 @@ void Flare::Update(float deltaTime){
 
             if (currentPosition.x == -100 && currentPosition.y == -100) {
                 currentPosition = targetPosition;
-                startPosition = targetPosition; // Avoid lerping from (-1000,-1000)
+                startPosition = targetPosition; // Avoid lerping from (-100,-100)
                 moveProgress = 1.0f; // Mark movement as complete
             } else {
                 // Normal movement setup

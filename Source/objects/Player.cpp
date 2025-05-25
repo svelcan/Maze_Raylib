@@ -48,25 +48,12 @@ void Player::Update(CellGrid& cellGrid, float deltaTime){
         return;
     }
 
-    //If you touch a coin it becomes invisible
-
-    if(Vector2Equals(cellGrid.coin.getPosition(), Vector2Subtract(this->position, {float(wallSize), float(wallSize)}))){
-        if(cellGrid.coin.visible == true){
+    //If you touch a coin it dissappears
+    for (CellGrid::Coin& coin : cellGrid.coins) {
+        if(Vector2Equals(coin.position, Vector2Subtract(this->position, {float(wallSize), float(wallSize)}))){
             score +=5;
+            coin.exists = false;           
         }
-        cellGrid.coin.visible = false;
-    }
-    if(Vector2Equals(cellGrid.coint.getPosition(), Vector2Subtract(this->position, {float(wallSize), float(wallSize)}))){
-        if(cellGrid.coint.visible == true){
-            score +=5;
-        }
-        cellGrid.coint.visible = false;
-    }
-    if(Vector2Equals(cellGrid.coinp.getPosition(), Vector2Subtract(this->position, {float(wallSize), float(wallSize)}))){
-        if(cellGrid.coinp.visible == true){
-            score +=5;
-        }
-        cellGrid.coinp.visible = false;
     }
 
     //If the player wants to move we check if there is a wall, if there is then reset player and show wall
@@ -110,9 +97,11 @@ void Player::Update(CellGrid& cellGrid, float deltaTime){
         }
     }
 
+    //Shoots a flare
     if(IsKeyPressed(KEY_SPACE) && flare.isMovementOrderEmpty()){
-        flare.FindShortestPath(cellGrid, {position.x - wallSize, position.y - wallSize}, {float(cellGrid.getColumns())-1, float(cellGrid.getRows())-1});
-        score -= 2;
+        //The flare will go to the closest coin
+        flare.ChooseCoin({position.x - wallSize, position.y - wallSize}, cellGrid);
+        score -= 6;
     }
 
     flare.Update(deltaTime);

@@ -5,7 +5,7 @@
 
 
 Game::Game(){
-    this->cellGrid = CellGrid({10,10});
+    this->cellGrid = CellGrid({5,5});
     this->player = Player(cellGrid);
     InitAudioDevice();
 
@@ -26,20 +26,26 @@ void Game::setCellGrid(CellGrid cellGrid){
     this->cellGrid = cellGrid;
 }
 
+
 int Game::Update(float deltaTime){
     player.Update(cellGrid, deltaTime);
-    if((IsKeyPressed(KEY_R) && levelCleared == false )|| player.score == 0){
+    if((IsKeyPressed(KEY_R) && levelCleared == false ) || player.score == 0){
         player.ResetPlayer();
+        player.flare.Reset();
         player.allowMovement = false;
         player.score = 10;
         return 0;
     }
 
-    //What to do when the coins have been collected
+    //Win condition ----------------------------------------------------------------------------------------
+    // What to do when the coins have been collected
     if(cellGrid.CoinsCollected()){
         player.allowMovement = false;
         levelCleared = true;
     }
+    //------------------------------------------------------------------------------------------------------
+
+
 
     if(levelCleared){
         if(IsKeyPressed(KEY_R)){
@@ -47,6 +53,7 @@ int Game::Update(float deltaTime){
             player.ResetPlayer();
             player.allowMovement = false;
             player.score = 10;
+            player.flare.Reset();
             levelCleared = false;
         return 0;
         }

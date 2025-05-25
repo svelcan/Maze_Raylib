@@ -1,8 +1,11 @@
 #include "CellGrid.hpp"
 #include "../core/Constants.hpp"
+#include <cmath>
+#include <iostream>
 #include <raylib.h>
 #include <raymath.h>
 #include <stack>
+#include <algorithm>
 
 
 
@@ -10,11 +13,20 @@ CellGrid::CellGrid(){
 }
 
 CellGrid::CellGrid(int rows, int columns){
-    Vector2 totalSizeMaze = {float(columns*cellSize - wallSize), float(rows*cellSize - wallSize)};
-    origin = {gameWidth/2.0f - totalSizeMaze.x/2, gameHeight/2.0f - totalSizeMaze.y/2-4};
+    //Adequate size of the maze so that it doesn't go off screen;
+    if(rows >= maxRows || columns >= maxColumns){
+        rows = maxRows;
+        columns = maxColumns;
+    }
 
     this->rows = rows;
     this->columns = columns;
+    
+    Vector2 totalSizeMaze = {float(columns*cellSize - wallSize), float(rows*cellSize - wallSize)};
+    origin = {gameWidth/2.0f - totalSizeMaze.x/2, gameHeight/2.0f - totalSizeMaze.y/2-4};
+
+    
+
     this->grid = std::vector<std::vector<Cell>>(rows, std::vector<Cell>(columns));
     
     for (int y = 0; y < rows; ++y) {
@@ -23,9 +35,7 @@ CellGrid::CellGrid(int rows, int columns){
         }
     }
 
-    coin = {true, true, getCell((float(rows)-1), float(columns)-1).getPosition()};
-    coint = {true, true, getCell((float(rows)-1), 0).getPosition()};
-    coinp = {true, true, getCell(0, float(columns)-1).getPosition()};
+    setCoinsLevel();
 }
 
 Cell& CellGrid::getCell(int row, int col) {
@@ -64,10 +74,42 @@ void CellGrid::setVisibleWalls(bool visible){
 */
 
 bool CellGrid::CoinsCollected(){
-    if(!coin.visible && !coint.visible && !coinp.visible){
+    for(Coin coin : coins){
+        if(coin.exists){
+        }
+    }
+
+    //If a coin doesn't exist then delete it
+    coins.erase(
+    std::remove_if(
+        coins.begin(), 
+        coins.end(), 
+        [](const Coin& coin) { return !coin.exists; }
+    ), 
+    coins.end()
+    );
+
+    //if coins is empty then every coin has been collected
+    if(coins.empty()){
         return true;
     }
     return false;
+}
+
+//There isn't a way to deal with coins in the same position, whatever for now
+void CellGrid::setCoinsLevel(){
+    //Linear Scaling
+    int numberCoins = std::floor(rows*columns / 10);
+
+    //Always add a coin in the opposite corner
+    Coin coin = {true, getCell((float(rows)-1), float(columns)-1).getPosition()};
+    coins.push_back(coin);
+
+    for(int i = 0; i < numberCoins; i++){
+        //Randomize coin position and push
+        Coin coin = {true, getCell(float(GetRandomValue(0, rows-1)), float(GetRandomValue(0, columns-1))).getPosition()};
+        coins.push_back(coin);
+    }
 }
 
 /*
@@ -187,13 +229,7 @@ void CellGrid::Draw(){
         }
     }
 
-    if(coin.visible){
+    for (Coin coin : coins) {
         coin.Draw();
-    }
-    if(coint.visible){
-        coint.Draw();
-    }
-    if(coinp.visible){
-        coinp.Draw();
     }
 }
