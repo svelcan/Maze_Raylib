@@ -28,3 +28,7 @@ Para compilar el juego:
 1. Recomendamos mucho descargar Raylib para que no haya problemas, hay diferentes formas de hacerlo dependiendo de la distribución.
 Para más información: https://github.com/raysan5/raylib/wiki/Working-on-GNU-Linux
 2. Hemos incluido un archivo `Makefile` y uno `build.bash` para facilitar la compilación y ejecución del proyecto, se puede usar entonces tanto `make run` así como `bash build.bash` para compilar.
+
+## Bugs
+En raras ocasiones cuando empiezas una partida y presionas espacio la bengala se queda en el lugar del jugador y ya no se puede usar, si esto sucede hay que cerrar el juego y volver a abrirlo 
+Creemos que es un problema con la animación de la bengala, pero no logramos solucionarlo porque aparecía muy raras veces en escenarios muy distintos, si la primera bengala hace un buen recorrido este bug ya no se presenta.
