@@ -1,34 +1,26 @@
 #include "Game.hpp"
-#include <iostream>
 #include <raylib.h>
 #include <string>
 
-
-Game::Game(){
-    this->cellGrid = CellGrid({5,5});
-    this->player = Player(cellGrid);
-    InitAudioDevice();
-
-    //eatSound = LoadSound("Sounds/eat.mp3");
-    //wallSound = LoadSound("Sounds/wall.mp3");
+//Constructor for the game
+Game::Game() : cellGrid({5,5}), player(cellGrid){
 }
 
-Game::~Game(){
-    //UnloadSound(eatSound);
-    //UnloadSound(wallSound);
-}
-
+//Returns the original maze grid
 CellGrid& Game::getCellGrid(){
     return this->cellGrid;
 }
 
+//Sets the cellGrid of the game
 void Game::setCellGrid(CellGrid cellGrid){
     this->cellGrid = cellGrid;
 }
 
-
+//Update method
 int Game::Update(float deltaTime){
     player.Update(cellGrid, deltaTime);
+
+    //Return to main menu
     if((IsKeyPressed(KEY_R) && levelCleared == false ) || player.score == 0){
         player.ResetPlayer();
         player.flare.Reset();
@@ -68,6 +60,7 @@ int Game::Update(float deltaTime){
     return -1;
 }
 
+//Draw method
 void Game::Draw() {
     if(levelCleared){
         DrawRectangle(5, 50, 310, 100, WHITE);
@@ -79,9 +72,6 @@ void Game::Draw() {
     cellGrid.Draw();
     player.Draw();
     DrawText(("Score: " + std::to_string(player.score)).c_str(), 1, 170, 10, WHITE);
-}
-
-void Game::GameOver(){
 }
 
 

@@ -20,7 +20,7 @@ int main()
 
 
     //Initiate window and random seed
-    InitWindow(screenWidth, screenHeight, "Magic_Maze");
+    InitWindow(screenWidth, screenHeight, "Invisible_Maze");
     SetRandomSeed(time(NULL));
 
     //Create menus BAD WAY TO DO ALL OF THIS BUT AT LEAST IT WORKS
@@ -151,7 +151,7 @@ int main()
         BeginTextureMode(target);
             ClearBackground(BLACK);
 
-            // Your low-res game drawing goes here:
+            // Low-res game drawing goes here:
             // State-based drawing
             switch (currentState)
             {
@@ -172,7 +172,7 @@ int main()
                     break;
                 case GameState::HOWTOPLAY_MENU:
                     howtoplayMenu.Draw();
-                    DrawText("Movement: Arrow keys, wasd \n Return: R \n Start playing: V", 1, 1, 10, WHITE);
+                    DrawText(" Movement: Arrow keys \n Return: R \n Start playing: V \n Shoot flare: Space", 1, 1, 10, WHITE);
                     break;
                 case GameState::SCORES_MENU:
                 {

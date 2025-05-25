@@ -1,25 +1,25 @@
 #pragma once
 
 #include <vector>
-#include "../objects/ClickableObject.hpp"
+#include "ClickableObject.hpp"
 
 class Menu{
     private:
+    //Variables
     std::vector<ClickableObject> buttons;
 
     public:
     //Constructors & Destructor
     Menu();
 
+    //Menu studd
     void AddButton(ClickableObject button);
     void ResetButtons();
 
-    //Every menu I will use
+    //Every menu, we know this isn't the best approach but at least it works
     void CreateMainMenu();
-    void CreateMultiplayerMenu();
     void CreateSingleplayerMenu();
     void CreateMazesizeMenu();
-    void CreatePositionresetMenu();
     void CreateHowtoplayMenu();
     void CreateScoresMenu();
 

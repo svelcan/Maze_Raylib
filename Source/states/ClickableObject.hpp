@@ -5,6 +5,7 @@
 
 class ClickableObject{
     private:
+    //Variables
     Vector2 position = {0,0};
     Vector2 size;
     std::string text = "";
@@ -13,12 +14,10 @@ class ClickableObject{
     public:
     //Constructor & Deconstructor
     ClickableObject(Vector2 position, Vector2 size, std::string text);
-    ~ClickableObject();
 
     //Getters & Setters
     Vector2 getPosition();
     void setPosition(Vector2 position);
-
     void setText(std::string text){
         this->text = text;
     }
@@ -26,6 +25,6 @@ class ClickableObject{
     //Important methods
     bool IsAbove();
 
-    //General methods
+    //Update & Draw
     void Draw();
 };

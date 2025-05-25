@@ -11,24 +11,19 @@
 #include <algorithm>
 #include <string>
 
-
-Player::Player(){
-
-}
+//Constructor that passes the grid
 Player::Player(CellGrid& cellGrid){
     initialPosition = {cellGrid.getCell(0, 0).getPosition().x + wallSize, cellGrid.getCell(0, 0).getPosition().y + wallSize};
     position = initialPosition;
 
 }
 
-Player::~Player(){
-
-}
-
+//Set player position
 void Player::setPosition(Vector2 position){
     this->position = position;
 }
 
+//Update method
 void Player::Update(CellGrid& cellGrid, float deltaTime){
     //Update Player's initial position based on the new maze
     if(lastKnownMazeSize.x != cellGrid.getColumns() || lastKnownMazeSize.y != cellGrid.getRows()){
@@ -70,7 +65,6 @@ void Player::Update(CellGrid& cellGrid, float deltaTime){
             if(cellGrid.getCellAtPosition({position.x - wallSize - cellSize, position.y - wallSize}).wall_right.exists){
                 cellGrid.getCellAtPosition({position.x - wallSize - cellSize, position.y - wallSize}).wall_right.visible = true;
                 score--;
-                //ResetPlayer();
             } else {
                position.x -= cellSize;
             }
@@ -80,7 +74,6 @@ void Player::Update(CellGrid& cellGrid, float deltaTime){
         if(cellGrid.getCellAtPosition({position.x - wallSize, position.y - wallSize}).wall_bottom.exists){
             cellGrid.getCellAtPosition({position.x - wallSize, position.y - wallSize}).wall_bottom.visible = true;
             score--;
-            //ResetPlayer();
         } else {
             position.y += cellSize;
         }
@@ -90,7 +83,6 @@ void Player::Update(CellGrid& cellGrid, float deltaTime){
             if(cellGrid.getCellAtPosition({position.x - wallSize, position.y - wallSize - cellSize}).wall_bottom.exists){
                 cellGrid.getCellAtPosition({position.x - wallSize, position.y - wallSize - cellSize}).wall_bottom.visible = true;
                 score--;
-                //ResetPlayer();
             } else {
                position.y -= cellSize;
             }
@@ -110,14 +102,17 @@ void Player::Update(CellGrid& cellGrid, float deltaTime){
     if(score < 0){score = 0;}
 }
 
+//Moves player to the initial position
 void Player::ResetPlayer(){
     this->position = this->initialPosition;
 }
 
+//Restores the score to 10
 void Player::ResetScore(){
     this->score = 10;
 }
 
+//Checks if you made a top 5 score and if so, adds it to the highscores
 void Player::SaveScore() {
     const std::string filename = "scores.txt";
     std::vector<int> scores;
@@ -153,6 +148,7 @@ void Player::SaveScore() {
     }
 }
 
+//Checks if there is a cell at a certain position, checking that is does not go out of bounds
 bool Player::IsThereCell(Vector2 cellPosition, CellGrid& cellGrid){
     if(cellPosition.x < 0
         || cellPosition.y < 0
@@ -163,6 +159,7 @@ bool Player::IsThereCell(Vector2 cellPosition, CellGrid& cellGrid){
     return true;
 }
 
+//Draw method
 void Player::Draw(){
     flare.Draw();
     DrawRectangle(position.x, position.y, size.x, size.y, PINK);

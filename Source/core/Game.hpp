@@ -8,24 +8,21 @@
 
 class Game{
     private:
-    //Sound eatSound;
-    //Sound wallSound;
-
-    Player player;
+    //Variables
     CellGrid cellGrid;
-
+    Player player;
     bool levelCleared = false;
     
 
     public:
     //Constructor & Deconstructor
     Game();
-    ~Game();
 
+    //Getters & Setters
     CellGrid& getCellGrid();
     void setCellGrid(CellGrid cellGrid);
-    void GameOver();
 
+    //Draw & Update
     void Draw();
     int Update(float deltaTime);
 };

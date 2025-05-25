@@ -2,35 +2,37 @@
 #include "../core/Constants.hpp"
 #include <raylib.h>
 
-
+//Constructor for cell
 Cell::Cell(){
     this->position = {0,0};
     this->wall_bottom = {true, true};
     this->wall_right = {true, true}; 
 }
 
+//Constructor for cell specifying position
 Cell::Cell(Vector2 position){
     this->position = position;    
     this->wall_bottom = {true, true};
     this->wall_right = {true, true}; 
 }
 
-Cell::~Cell(){
-}
-
+//Randomizes the Walls
 void Cell::RandomizeWalls(){
     this->wall_bottom.exists = GetRandomValue(0, 1);
     this->wall_right.exists = GetRandomValue(0, 1);
 }
 
+//Returns position
 Vector2 Cell::getPosition(){
     return this->position;
 }
 
+//Sets position
 void Cell::setPosition(Vector2 position){
     this->position = position;
 }
 
+//Draw method
 void Cell::Draw(){
     //Draw the cell's main area
     DrawRectangle(position.x, position.y, cellSize, cellSize, BLUE);

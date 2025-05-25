@@ -8,6 +8,7 @@
 
 class CellGrid{
     private:
+    //Variables
     std::vector<std::vector<Cell>> grid;
     int rows, columns;
     static const int maxRows = 17;
@@ -18,11 +19,10 @@ class CellGrid{
 
     //Private methods
     void ResetGrid();
-    
-    //TODO add maximum size of maze (around 35*63 probably)
 
     
     public:
+    //Struct for Coin
     struct Coin {
         bool exists;
         Vector2 position;
@@ -31,38 +31,32 @@ class CellGrid{
             DrawRectangle(position.x+3, position.y+3, 2, 2, YELLOW);
         }
     };
-
+    //Public variables
     std::vector<Coin> coins;
 
     //Constructor & Deconstructor
-    CellGrid();
     CellGrid(int rows, int colummns);
 
     //Getters & Setters
     int getColumns();
     int getRows();
     Vector2 getOrigin();
-
     Cell& getCell(int row, int col);
     Cell& getCellAtPosition(Vector2 pos);
-
     void setVisibleWalls(bool visible);
 
 
-    //Coins stuff
+    //Coin stuff
     bool CoinsCollected();
     void setCoinsLevel();
 
     //Maze algorithms
-    //This one serves no purpose but is funny for now
     void GenerateRandomMaze();
     void GenerateBackTrackingMaze();
     bool isValid(Vector2 position);
-
     void ResetVisited();
 
 
-
-    //Draws to the screen
+    //Update & Draw
     void Draw();
 };

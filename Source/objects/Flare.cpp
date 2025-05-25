@@ -14,15 +14,15 @@ Vector2 down = {0, 1};
 Vector2 left = {-1, 0};
 Vector2 right = {1, 0};
 
-
+//Constructor
 Flare::Flare(){
 }
 
-//Similar to the backtracking algorithm, we explore the maze and If we get to a point where there are no cells
-//available then that means that path is a dead end, so we backtrack to the last time we had to make a decision
 void Flare::FindShortestPath(CellGrid& cellGrid, Vector2 positionCell, Vector2 destination){
-    //TODO when the objective changes to coins this bug catcher will probably be useless
-    //This prevents a flare from being thrown if the player is standing in the objective
+    //Similar to the backtracking algorithm, we explore the maze and If we get to a point where there are no cells
+    //available then that means that path is a dead end, so we backtrack to the last time we had to make a decision
+
+    //This prevents a flare from being thrown if the player is standing in the objective, the game probably works without it but better safe than sorry
     if(Vector2Equals(positionCell, Vector2Add({Vector2Scale(destination, cellSize)}, cellGrid.getOrigin()))){
         return;
     }
@@ -80,11 +80,12 @@ void Flare::FindShortestPath(CellGrid& cellGrid, Vector2 positionCell, Vector2 d
 
         }
 
-        //If there aren't any valid cells then backtrack biatch
+        //If there aren't any valid cells then backtrack
         mazeStack.pop();
     }
 }
 
+//Checks if cell is inside the grid, unvisited and there isn't a wall
 bool Flare::isValid(Vector2 currentPosition, Vector2 nextPosition, Vector2 direction, CellGrid& cellGrid){
     //If out of bounds return false
     if(nextPosition.x < 0
@@ -113,6 +114,7 @@ bool Flare::isValid(Vector2 currentPosition, Vector2 nextPosition, Vector2 direc
     return !cellGrid.getCell(nextPosition.y, nextPosition.x).visited;
 }
 
+//Finds the nearest coin and saves the route to get it
 void Flare::ChooseCoin(Vector2 playerPosition, CellGrid& cellGrid){
     unsigned int least = 10000; //Arbitrarily large number (I think the shortest path can be max 17*31 = 527 but I'm not gonna wager on that)
     std::stack<Vector2> movementOrderAuxiliar;
@@ -131,10 +133,12 @@ void Flare::ChooseCoin(Vector2 playerPosition, CellGrid& cellGrid){
     movementOrder = movementOrderAuxiliar;
 }
 
+//Returns true if there isn't a route to a coin
 bool Flare::isMovementOrderEmpty(){
     return movementOrder.empty();
 }
 
+//Resets Flare variables
 void Flare::Reset(){
     while (!movementOrder.empty()) {
         movementOrder.pop();
@@ -143,6 +147,8 @@ void Flare::Reset(){
     moveProgress = 1;
 }
 
+//Update method
+//Here is where we think the bug is, because some variables tend to get impossibly large, sadly we coudn't find it
 void Flare::Update(float deltaTime){
 
     if (!movementOrder.empty()) {
@@ -180,11 +186,12 @@ void Flare::Update(float deltaTime){
             };
         }
     } else {
-        currentPosition = {-100, -100};  // Or whatever your "hidden" position should be
+        currentPosition = {-100, -100};
         moveProgress = 1.0f;
     }
 }
 
+//Draw method
 void Flare::Draw(){
     DrawRectangle(currentPosition.x+3, currentPosition.y+3, 2, 2, RED);
 }

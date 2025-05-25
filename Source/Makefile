@@ -20,6 +20,7 @@ $(EXECUTABLE): $(SOURCES)
 
 clean:
 	rm -f $(EXECUTABLE)
+	find . -type f -name "*.o" -exec rm {} +
 
 run: $(EXECUTABLE)
 	./$(EXECUTABLE)

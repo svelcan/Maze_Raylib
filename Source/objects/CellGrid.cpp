@@ -1,7 +1,6 @@
 #include "CellGrid.hpp"
 #include "../core/Constants.hpp"
 #include <cmath>
-#include <iostream>
 #include <raylib.h>
 #include <raymath.h>
 #include <stack>
@@ -9,9 +8,7 @@
 
 
 
-CellGrid::CellGrid(){
-}
-
+//Constructor that sets the size of the maze
 CellGrid::CellGrid(int rows, int columns){
     //Adequate size of the maze so that it doesn't go off screen;
     if(rows >= maxRows || columns >= maxColumns){
@@ -38,28 +35,33 @@ CellGrid::CellGrid(int rows, int columns){
     setCoinsLevel();
 }
 
+//Returns cell using grid coordinates
 Cell& CellGrid::getCell(int row, int col) {
     return grid[row][col];
 }
 
+//Returns cell using pixel coordinates
 Cell& CellGrid::getCellAtPosition(Vector2 pos) {
     int col = (pos.x - origin.x)/ cellSize;
     int row = (pos.y - origin.y)/ cellSize;
     return grid[row][col];
 }
-
+//Returns number of columns
 int CellGrid::getColumns(){
     return this->columns;
 }
 
+//Returns number of rows
 int CellGrid::getRows(){
     return this->rows;
 }
 
+//Returns the origin of the maze
 Vector2 CellGrid::getOrigin(){
     return this->origin;
 }
 
+//Makes the maze visible
 void CellGrid::setVisibleWalls(bool visible){
     for (int y = 0; y < rows; ++y) {
         for (int x = 0; x < columns; ++x) {
@@ -73,6 +75,7 @@ void CellGrid::setVisibleWalls(bool visible){
 * COINS ----------------------------------------------------------------------------------------------
 */
 
+//Returns true if all the coins have been collected
 bool CellGrid::CoinsCollected(){
     for(Coin coin : coins){
         if(coin.exists){
@@ -96,7 +99,8 @@ bool CellGrid::CoinsCollected(){
     return false;
 }
 
-//There isn't a way to deal with coins in the same position, whatever for now
+//Randomizes the coins positions in the maze
+//We didn't account for two or more coins getting the same position
 void CellGrid::setCoinsLevel(){
     //Linear Scaling
     int numberCoins = std::floor(rows*columns / 10);
@@ -115,6 +119,8 @@ void CellGrid::setCoinsLevel(){
 /*
 * MAZE ALGORITHMS ----------------------------------------------------------------------------------------------
 */
+
+//Generates a funny looking unplayable maze
 void CellGrid::GenerateRandomMaze(){
 
     for (int y = 0; y < rows; ++y) {
@@ -124,6 +130,7 @@ void CellGrid::GenerateRandomMaze(){
     }
 }
 
+//Generates a maze using backtracking
 void CellGrid::GenerateBackTrackingMaze(){
     ResetGrid();
 
@@ -181,7 +188,7 @@ void CellGrid::GenerateBackTrackingMaze(){
 
         }
 
-        //If there aren't any valid cells then backtrack biatch
+        //If there aren't any valid cells then backtrack
         mazeStack.pop();
     }
 }
@@ -198,6 +205,7 @@ bool CellGrid::isValid(Vector2 cellPosition){
     return !grid[cellPosition.y][cellPosition.x].visited;
 }
 
+//Prepares the grid for generating a new maze
 void CellGrid::ResetGrid(){
     for (int y = 0; y < rows; ++y) {
         for (int x = 0; x < columns; ++x) {
@@ -210,6 +218,7 @@ void CellGrid::ResetGrid(){
     }
 }
 
+//Marks every cell as unvisited
 void CellGrid::ResetVisited(){
     for (int y = 0; y < rows; ++y) {
         for (int x = 0; x < columns; ++x) {
@@ -222,6 +231,7 @@ void CellGrid::ResetVisited(){
 * RENDERING ----------------------------------------------------------------------------------------------
 */
 
+//Draw method
 void CellGrid::Draw(){
     for (float y = 0; y < rows; ++y) {
         for (float x = 0; x < columns; ++x) {
